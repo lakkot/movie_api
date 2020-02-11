@@ -1,9 +1,10 @@
 {
   "name": "movie_api",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "loadash": "^1.0.0"
   },
   "devDependencies": {
@@ -23,5 +24,6 @@
   "bugs": {
     "url": "https://github.com/lakkot/movie_api/issues"
   },
-  "homepage": "https://github.com/lakkot/movie_api#readme"
+  "homepage": "https://github.com/lakkot/movie_api#readme",
+  "description": ""
 }
