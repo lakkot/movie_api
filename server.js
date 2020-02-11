@@ -1,20 +1,21 @@
-//import http, file system and url modules
-const http = require('http'),
-  fs = require('fs'),
-  url = require('url');
 
+
+//import http, file system and url modules
+const http = require('http');
+const fs = require('fs');
+const url = require('url');
 
 http.createServer((request, response) => {
   // addr = url
-  var addr = request.url,
+  var addr = 'http://localhost:8080/documentation.html',
   // parse the adress and save it to variable q
   q = url.parse(addr, true),
   // creating container where later the new url will be stored
   filePath = '';
-
+    console.log(request.url);
   //if path includes documentation, then filepath = current directory path + documentation.html
   if(q.pathname.includes('documentation')) {
-    filePath = (__dirname + 'documentation.html');
+    filePath = (__dirname + '/documentation.html');
   } else {
     filePath = 'index.html'; //optimally should throw 404 error
   }
@@ -39,6 +40,8 @@ http.createServer((request, response) => {
   });
 
 }).listen(8080);
+
+
 
 
 
