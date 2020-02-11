@@ -16,7 +16,7 @@ http.createServer((request, response) => {
   if(q.pathname.includes('documentation')) {
     filePath = (__dirname + 'documentation.html');
   } else {
-    filePath = index.html; //optimally should throw 404 error
+    filePath = 'index.html'; //optimally should throw 404 error
   }
   //get appropriate file from the server
   fs.readFile(filePath, function(err, data) {
