@@ -29,15 +29,17 @@ http.createServer((request, response) => {
     response.end();
   });
 
+  // add activity to log.txt
+  fs.appendFile('log.txt', 'URL:' + addr + '\nTimestamp: ' + new Date() + '\n\n', function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Added to log.txt');
+    }
+  });
+
 }).listen(8080);
-// add activity to log.txt
-fs.appendFile('log.txt', 'URL:' + addr + '\nTimestamp: ' + new Date() + '\n\n', function(err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Added to log.txt');
-  }
-});
+
 
 
 console.log('My first node test server is running on port 8080.');
