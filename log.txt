@@ -94,3 +94,21 @@ Timestamp: Tue Feb 11 2020 15:58:34 GMT+0100 (Central European Standard Time)
 URL:http://localhost:8080/documentation.html
 Timestamp: Tue Feb 11 2020 15:58:34 GMT+0100 (Central European Standard Time)
 
+URL:/
+Timestamp: Tue Feb 11 2020 16:00:46 GMT+0100 (Central European Standard Time)
+
+URL:/favicon.ico
+Timestamp: Tue Feb 11 2020 16:00:47 GMT+0100 (Central European Standard Time)
+
+URL:http://localhost:8080/documentation.html
+Timestamp: Tue Feb 11 2020 16:01:09 GMT+0100 (Central European Standard Time)
+
+URL:http://localhost:8080/documentation.html
+Timestamp: Tue Feb 11 2020 16:01:09 GMT+0100 (Central European Standard Time)
+
+URL:http://localhost:8080/documentation.html
+Timestamp: Tue Feb 11 2020 16:02:32 GMT+0100 (Central European Standard Time)
+
+URL:http://localhost:8080/documentation.html
+Timestamp: Tue Feb 11 2020 16:02:32 GMT+0100 (Central European Standard Time)
+
