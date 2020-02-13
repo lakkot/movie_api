@@ -99,6 +99,14 @@ app.delete('/movies/:id', (req, res) => {
   }
 });
 
+app.post('/movies/:username/favorites/:title', (req, res) => {
+  let fav = bestMovies.find((obj) => { return obj.title = req.params.id });
+  var myFlix = [];
+  users.username.push(myFlix);
+  users.username[myFlix].push(fav);
+})
+
+
 
 //return data about movie genres
 app.get('/genres/:name', (req, res) => {
