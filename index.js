@@ -160,19 +160,33 @@ app.get('/:username/favorites/', (req ,res) => {
 
 
 //adding movie to user favorites list
-app.post('/:username/favorites/:title', (req, res) => {
-    let movie = bestMovies.find((obj) => {return obj.title = req.params.title});
+app.post('/:username/favorites/', (req, res) => {
+
+  let newFav = req.body;
+
+  if (!newFav.title) {
+    const message = 'movie title is required';
+    res.status(400).send(message);
+  } else {
+    newMovie.id = uuid.v4();
+    bestMovies.push(newMovie);
+    res.status(201).send(newMovie);
+  }
+  /*
+    let movie = bestMovies.find((obj) => {return obj.id = req.params.id});
     userFavorites.push(movie);
     res.status(201).send('added to favorites');
     console.log(userFavorites);
+
+    */
 });
 
 //removing movies from favorites list
-app.delete('/:username/favorites/:title', (req, res) => {
-  let removeMovie = userFavorites.find((obj) => {return obj.title = req.params.title});
+app.delete('/:username/favorites/:id', (req, res) => {
+  let removeMovie = userFavorites.find((obj) => {return obj.id = req.params.id});
 
   if (removeMovie) {
-    userFavorites.filter(function(obj) { return obj.title !== req.params.title });
+    userFavorites.filter(function(obj) { return obj.id !== req.params.id });
     res.status(201).send('removed from favorites');
     console.log(userFavorites);
 }
