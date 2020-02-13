@@ -169,8 +169,8 @@ app.post('/:username/favorites/', (req, res) => {
     res.status(400).send(message);
   } else {
     newMovie.id = uuid.v4();
-    bestMovies.push(newMovie);
-    res.status(201).send(newMovie);
+    userFavorites.push(newFav);
+    res.status(201).send(newFav);
   }
   /*
     let movie = bestMovies.find((obj) => {return obj.id = req.params.id});
