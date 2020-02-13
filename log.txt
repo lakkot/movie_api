@@ -1,1 +1,0 @@
-::ffff:127.0.0.1 - - [13/Feb/2020:16:06:42 +0000] "GET /directors/Jim%20Jarmusch HTTP/1.1" 200 54
