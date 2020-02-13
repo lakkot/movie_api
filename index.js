@@ -14,7 +14,8 @@ let bestMovies = [
 
 /*****middleware functions*****/
 //reroute requests for static pages to public folder
-app.use(express.static('public'));
+//app.use(express.static('public')); - this will only work if you put .html at the end of the adress
+app.use(express.static('public',{extensions:['html']}));
 //create log using morgan module
 app.use(morgan('common'));
 //error handling
