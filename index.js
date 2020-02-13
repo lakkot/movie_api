@@ -1,5 +1,6 @@
 //calling modules
 const express = require('express'),
+  fs = require('fs'),
   morgan = require('morgan');
 const app = express();
 
@@ -11,13 +12,14 @@ let bestMovies = [
   {title: 'Dr. Strangelove', director: 'Stanley Kubrick'},
   {title: 'Down by Law', director: 'Jim Jarmusch'},
 ]
-
 /*****middleware functions*****/
 //reroute requests for static pages to public folder
 //app.use(express.static('public')); - this will only work if you put .html at the end of the adress
 app.use(express.static('public',{extensions:['html']}));
 //create log using morgan module
-app.use(morgan('common'));
+app.use(morgan('common', {
+  stream: fs.createWriteStream('log.txt')
+}));
 //error handling
 app.use(function(err, req, res, next) {
   console.error(err.stack);
@@ -33,6 +35,9 @@ app.get ('/', function(req, res) {
 app.get('/movies', function(req, res){
   res.json(bestMovies)
 });
+
+
+
 
 //listen for requests
 app.listen(8080, () => {
