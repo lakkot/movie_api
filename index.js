@@ -32,6 +32,9 @@ let users = [
   {username: 'user3', password: 'password3', email: 'user3@email.com', birth: '17.08.2000', id: 3}
 ]
 
+//this will be created for each user so that favoties are not stored with passwords
+let userFavorites = []
+
 //calling modules
 const express = require('express'),
   fs = require('fs'),
@@ -41,7 +44,6 @@ const express = require('express'),
 
 const app = express();
 app.use(bodyParser.json());
-
 
 /*****middleware functions*****/
 //reroute requests for static pages to public folder
@@ -99,12 +101,7 @@ app.delete('/movies/:id', (req, res) => {
   }
 });
 
-app.post('/movies/:username/favorites/:title', (req, res) => {
-  let fav = bestMovies.find((obj) => { return obj.title = req.params.id });
-  var myFlix = [];
-  users.username.push(myFlix);
-  users.username[myFlix].push(fav);
-})
+
 
 
 
@@ -148,13 +145,40 @@ app.put('/users/:username', (req, res) => {
 
 //allow users do deregister
 app.delete('/users/:id', (req, res) => {
-  let user = users.find((obj) => {return obj.id = req.params.id});
+  let user = users.find((user) => {return user.id = req.params.id});
 
   if (user) {
-    users.filter(function(obj) { return obj.id !== req.params.id });
-    res.status(201).send(req.params.id + ' was deleted form the database.')
+    users.filter(function(user) { return user.id !== req.params.id });
+    res.status(201).send(req.params.id + ' was deleted form the database.');
+    console.log(users);
   }
 });
+
+app.get('/:username/favorites/', (req ,res) => {
+  res.json(userFavorites);
+});
+
+
+//adding movie to user favorites list
+app.post('/:username/favorites/:title', (req, res) => {
+    let movie = bestMovies.find((obj) => {return obj.title = req.params.title});
+    userFavorites.push(movie);
+    res.status(201).send('added to favorites');
+    console.log(userFavorites);
+});
+
+//removing movies from favorites list
+app.delete('/:username/favorites/:title', (req, res) => {
+  let removeMovie = userFavorites.find((obj) => {return obj.title = req.params.title});
+
+  if (removeMovie) {
+    userFavorites.filter(function(obj) { return obj.title !== req.params.title });
+    res.status(201).send('removed from favorites');
+    console.log(userFavorites);
+}
+
+});
+
 
 
 //listen for requests
