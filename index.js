@@ -101,10 +101,6 @@ app.delete('/movies/:id', (req, res) => {
   }
 });
 
-
-
-
-
 //return data about movie genres
 app.get('/genres/:name', (req, res) => {
   res.json(genres.find( (genre) =>
@@ -149,8 +145,7 @@ app.delete('/users/:id', (req, res) => {
 
   if (user) {
     users.filter(function(user) { return user.id !== req.params.id });
-    res.status(201).send(req.params.id + ' was deleted form the database.');
-    console.log(users);
+    res.status(201).send('user ' + req.params.name + ' was deleted form the database.');
   }
 });
 
@@ -161,16 +156,15 @@ app.get('/:username/favorites/', (req ,res) => {
 
 //adding movie to user favorites list
 app.post('/:username/favorites/', (req, res) => {
-
   let newFav = req.body;
 
   if (!newFav.title) {
     const message = 'movie title is required';
     res.status(400).send(message);
   } else {
-    newMovie.id = uuid.v4();
     userFavorites.push(newFav);
     res.status(201).send(newFav);
+    console.log(userFavorites);
   }
   /*
     let movie = bestMovies.find((obj) => {return obj.id = req.params.id});
