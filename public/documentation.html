@@ -1,2 +1,102 @@
-<h1>Movies API</h1>
-<p> allows users to search movie database by movies, directors and genres</p>
+<!Doctype html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <title>Movies App API</title>
+</head>
+
+<body>
+
+  <h1>Movies API</h1>
+  <p> allows users to search movie database by movies, directors and genres. Users can sign up and create their own favorites list</p>
+
+
+  <table>
+    <thead>
+      <tr>
+        <th>Request</th>
+        <th>URL</th>
+        <th>HTTP Method</th>
+        <th>Request body data format</th>
+        <th>Response body data format</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Get list of all movies</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON object including data about movies</td>
+      </tr>
+      <tr>
+        <td>Get info about a movie based on title</td>
+        <td>/movies/[title]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON object including data about a movie based on title (title, director, genre).
+          Example: {"title": "Wild at Heart", "director": "David Lynch", "genre": ["road", "romance"], "image": "./img/wild_at_heart.jpg", "id": "1"}</td>
+      </tr>
+      <tr>
+        <td>Add new movie to the database</td>
+        <td>/movies</td>
+        <td>POST</td>
+        <td>Title is required. {"title": "Wild at Heart", "director": "David Lynch", "genre": ["road", "romance"], "image": "./img/wild_at_heart.jpg"}</td>
+        <td>{"title": "Wild at Heart", "director": "David Lynch", "genre": ["road", "romance"], "image": "./img/wild_at_heart.jpg", "id": "1"}</td>
+      </tr>
+      <tr>
+        <td>Delete movie from database</td>
+        <td>/movies/[id]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>Message – movie removed</td>
+      </tr>
+      <tr>
+        <td>Get information about chosen genre</td>
+        <td>/genres/[name]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON object – genre name and description. Example: {"name": "road", "description": "A road movie is a film genre in which the main characters leave home on a road trip, typically altering the perspective from their everyday lives."}</td>
+      </tr>
+      <tr>
+        <td>Get information about chosen director</td>
+        <td>/directors/[name]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON object – director name, date of birth and short bio. Example:{"name": "David Lynch", "birth": "", "death": "", "bio": ""}</td>
+      </tr>
+      <tr>
+        <td>Add user – open account</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>JSON object holding new user data. Required: username, password and email. {"username": "user1", "password": "password1", "email": "user1@email.com", "birth": "21.09.1989"}</td>
+        <td>JSON object holding user data, including ID. {"username": "user1", "password": "password1", "email": "user1@email.com", "birth": "21.09.1989", "id": "1"}</td>
+      </tr>
+      <tr>
+        <td>Update username</td>
+        <td>/users/[username]</td>
+        <td>PUT</td>
+        <td>JSON object with updated user info (now username, rest coming soon). Example: {"username" : "newusername"}</td>
+        <td>text message indicating the user's information was updated</td>
+      </tr>
+      <tr>
+        <td>Add movie to favorite list</td>
+        <td>/[username]/favorites</td>
+        <td>POST</td>
+        <td>JSON object data about the movie. Example: {"title": "Wild at Heart", "director": "David Lynch", "genre": ["road", "romance"]}</td>
+        <td>A text message – added to favorites</td>
+      </tr>
+      <tr>
+        <td>Remove from favorites list</td>
+        <td>/[username]/favorites/[id]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message – removed from favorites</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+
+</body>
