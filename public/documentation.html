@@ -12,7 +12,6 @@
   <h1>Movies API</h1>
   <p class="sub-header"> allows users to search movie database by movies, directors and genres. Users can sign up and create their own favorites list</p>
 
-
   <table>
     <thead>
       <tr>
@@ -39,21 +38,9 @@
         <td>JSON object including data about a movie based on title (title, director, genre).
           Example: <br><span>{ "_id" : ObjectId("5e4962305f0c94b3f38595cc"), "title" : "Fight Club", "description" : "An insomniac office ... ", "director" : { "name" : "David Fincher", "bio" : "is an American director...", "birth" : "28.08.1962" }, "genre" : { "name" : "Drama", "description" : "Within film, television ..." }, "imageURL" : "/img/movie.jpg", "featured" : false }</span></td>
       </tr>
-      <tr>
-        <td>Add new movie to the database</td>
-        <td>/movies</td>
-        <td>POST</td>
-        <td>Title is required. <br><span>{"title" : "American Psycho", "description" : "A wealthy New York City (…)", "director" : { "name" : "Mary Harron"}, "genre" : { "name" : "Crime”}, "imageURL" : "/img/movie.jpg"}</span></td>
-        <td><span>{"_id" : ObjectId("5e4961605f0c94b3f38595c8"), "title" : "American Psycho", "description" : "A wealthy New York City (…)", "director" : { "name" : "Mary Harron"}, "genre" : { "name" : "Crime”}, "imageURL" : "/img/movie.jpg"}</span></td>
-      </tr>
-      <tr>
-        <td>Delete movie from database</td>
-        <td>/movies/[id]</td>
-        <td>DELETE</td>
-        <td>None</td>
-        <td>Message – movie removed</td>
-      </tr>
-<!-- director and genre databases offline
+<!-- probably not a good idea to let people add/delete movies
+
+  -->
       <tr>
         <td>Get information about chosen genre</td>
         <td>/genres/[name]</td>
@@ -68,7 +55,20 @@
         <td>None</td>
         <td>JSON object – director name, date of birth and short bio. Example:{"name": "David Lynch", "birth": "", "death": "", "bio": ""}</td>
       </tr>
--->
+      <tr>
+        <td>Get information about user</td>
+        <td>/users/[username]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON object holding user data, including ID.<br><span> { "_id" : ObjectId("5e49a4cece6f8e27e88042e7"), "username" : "user1", "password" : "password1", "email" : "email1@test.com", "birthday" : ISODate("1994-02-17T00:00:00Z")}</td>
+      </tr>
+      <tr>
+        <td>Show user favorites ID</td>
+        <td>/users/[username]/movies/</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON object containing array with favorite moive IDs. Example: <br><span>["5e4961715f0c94b3f38595c9", "5e4961605f0c94b3f38595c8"]</span></td>
+      </tr>
       <tr>
         <td>Add user – open account</td>
         <td>/users</td>
@@ -77,27 +77,50 @@
         <td>JSON object holding user data, including ID.<br><span> { "_id" : ObjectId("5e49a4cece6f8e27e88042e7"), "username" : "user1", "password" : "password1", "email" : "email1@test.com", "birthday" : ISODate("1994-02-17T00:00:00Z")}</span></td>
       </tr>
       <tr>
-        <td>Update username</td>
-        <td>/users/[username]</td>
-        <td>PUT</td>
-        <td>JSON object with updated user info (now username, rest coming soon). Example:<br><span> {"username" : "newusername"}</span></td>
-        <td>text message indicating the user's information was updated</td>
-      </tr>
-      <tr>
         <td>Add movie to favorite list</td>
-        <td>/[username]/favorites</td>
+        <td>/users/[username]/movies/[id]</td>
         <td>POST</td>
-        <td>JSON object data about the movie. Example: <br><span>{"title": "Wild at Heart"}</span></td>
+        <td>JSON object data about the movie. Example: <br><span>{"_id": "1"}</span></td>
         <td>A text message – added to favorites</td>
       </tr>
       <tr>
-        <td>Remove from favorites list</td>
-        <td>/[username]/favorites/[id]</td>
+        <td>Update user data</td>
+        <td>/users/[username]</td>
+        <td>PUT</td>
+        <td>JSON object with updated user info. Example:<br><span> {"username": "userX", "password": "passwordX", "email": "userX@email.com", "birthday": "1980-07-02"}</span></td>
+        <td>text message indicating the user's information was updated</td>
+      </tr>
+      <tr>
+        <td>Remove user</td>
+        <td>/users/[id]</td>
         <td>DELETE</td>
         <td>None</td>
         <td>A text message – removed from favorites</td>
       </tr>
-
+      <tr>
+        <td>Remove from favorites list</td>
+        <td>/users/[username]/movies/[id]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text message – removed from favorites</td>
+      </tr>
+      <tr>
+        <th class="sub-header" colspan=5>Admin functions - best not to enable for users</th>
+      </tr>
+      <tr>
+        <td>Add new movie to the database</td>
+        <td>/movies</td>
+        <td>POST</td>
+        <td><span>{"title": "Joker", "description": "Forever alone in a crowd...", "director": "Todd Phillips", "imageURL" : "/img/poster.jpg"}</span></td>
+        <td><span>{ "director": { "name": "Todd Phillips"}, "actors": [], "_id": "5e4aaa689661dd0515bd4a5e", "title": "Joker", "description": "Forever alone in a crowd…", "imageURL": "/img/poster.jpg", "__v": 0}</span></td>
+      </tr>
+      <tr>
+        <td>Delete movie from database</td>
+        <td>/movies/[id]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>Message – movie removed</td>
+      </tr>
     </tbody>
   </table>
 

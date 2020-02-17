@@ -10,6 +10,11 @@ tr {
   padding-bottom: 10px;
 }
 
+tbody tr:hover {
+  background-color: #F0FFF0;
+  transition-duration: 1s;
+}
+
 th {
   border-bottom: 1px solid #ddd;
 }
@@ -32,4 +37,9 @@ span {
 th {
   text-align: left;
   padding-bottom: 20px;
+}
+
+.sub-header {
+  text-align: center;
+  padding-top: 10px;
 }
