@@ -1,5 +1,35 @@
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+tr {
+  padding-bottom: 10px;
+}
+
+th {
+  border-bottom: 1px solid #ddd;
+}
+
+.sub-header {
+  text-align: center;
+}
 
 table {
+  margin: 20px;
   table-layout: fixed;
-  width: 90%;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+span {
+  color: blue;
+}
+
+th {
+  text-align: left;
+  padding-bottom: 20px;
 }

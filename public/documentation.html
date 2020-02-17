@@ -2,6 +2,7 @@
 
 <head>
   <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
   <title>Movies App API</title>
 </head>
@@ -9,17 +10,17 @@
 <body>
 
   <h1>Movies API</h1>
-  <p> allows users to search movie database by movies, directors and genres. Users can sign up and create their own favorites list</p>
+  <p class="sub-header"> allows users to search movie database by movies, directors and genres. Users can sign up and create their own favorites list</p>
 
 
   <table>
     <thead>
       <tr>
-        <th>Request</th>
-        <th>URL</th>
-        <th>HTTP Method</th>
-        <th>Request body data format</th>
-        <th>Response body data format</th>
+        <th width=20%>Request</th>
+        <th width=10%>URL</th>
+        <th width=10%>HTTP Method</th>
+        <th width=30%>Request body data format</th>
+        <th width=30%>Response body data format</th>
       </tr>
     </thead>
     <tbody>
@@ -36,14 +37,14 @@
         <td>GET</td>
         <td>None</td>
         <td>JSON object including data about a movie based on title (title, director, genre).
-          Example: { "_id" : ObjectId("5e4962305f0c94b3f38595cc"), "title" : "Fight Club", "description" : "An insomniac office ... ", "director" : { "name" : "David Fincher", "bio" : "is an American director...", "birth" : "28.08.1962" }, "genre" : { "name" : "Drama", "description" : "Within film, television ..." }, "imageURL" : "/img/movie.jpg", "featured" : false }</td>
+          Example: <br><span>{ "_id" : ObjectId("5e4962305f0c94b3f38595cc"), "title" : "Fight Club", "description" : "An insomniac office ... ", "director" : { "name" : "David Fincher", "bio" : "is an American director...", "birth" : "28.08.1962" }, "genre" : { "name" : "Drama", "description" : "Within film, television ..." }, "imageURL" : "/img/movie.jpg", "featured" : false }</span></td>
       </tr>
       <tr>
         <td>Add new movie to the database</td>
         <td>/movies</td>
         <td>POST</td>
-        <td>Title is required. {"title" : "American Psycho", "description" : "A wealthy New York City (…)", "director" : { "name" : "Mary Harron"}, "genre" : { "name" : "Crime”}, "imageURL" : "/img/movie.jpg"}</td>
-        <td>{"_id" : ObjectId("5e4961605f0c94b3f38595c8"), "title" : "American Psycho", "description" : "A wealthy New York City (…)", "director" : { "name" : "Mary Harron"}, "genre" : { "name" : "Crime”}, "imageURL" : "/img/movie.jpg"}</td>
+        <td>Title is required. <br><span>{"title" : "American Psycho", "description" : "A wealthy New York City (…)", "director" : { "name" : "Mary Harron"}, "genre" : { "name" : "Crime”}, "imageURL" : "/img/movie.jpg"}</span></td>
+        <td><span>{"_id" : ObjectId("5e4961605f0c94b3f38595c8"), "title" : "American Psycho", "description" : "A wealthy New York City (…)", "director" : { "name" : "Mary Harron"}, "genre" : { "name" : "Crime”}, "imageURL" : "/img/movie.jpg"}</span></td>
       </tr>
       <tr>
         <td>Delete movie from database</td>
@@ -72,21 +73,21 @@
         <td>Add user – open account</td>
         <td>/users</td>
         <td>POST</td>
-        <td>JSON object holding new user data. Required: username, password and email. {username: 'user1', password: 'password1', email: 'email1@test.com', birthday: new Date('1994-02-17')}</td>
-        <td>JSON object holding user data, including ID. { "_id" : ObjectId("5e49a4cece6f8e27e88042e7"), "username" : "user1", "password" : "password1", "email" : "email1@test.com", "birthday" : ISODate("1994-02-17T00:00:00Z")}</td>
+        <td>JSON object holding new user data. Required: username, password and email.<br><span> {username: 'user1', password: 'password1', email: 'email1@test.com', birthday: new Date('1994-02-17')}</span></td>
+        <td>JSON object holding user data, including ID.<br><span> { "_id" : ObjectId("5e49a4cece6f8e27e88042e7"), "username" : "user1", "password" : "password1", "email" : "email1@test.com", "birthday" : ISODate("1994-02-17T00:00:00Z")}</span></td>
       </tr>
       <tr>
         <td>Update username</td>
         <td>/users/[username]</td>
         <td>PUT</td>
-        <td>JSON object with updated user info (now username, rest coming soon). Example: {"username" : "newusername"}</td>
+        <td>JSON object with updated user info (now username, rest coming soon). Example:<br><span> {"username" : "newusername"}</span></td>
         <td>text message indicating the user's information was updated</td>
       </tr>
       <tr>
         <td>Add movie to favorite list</td>
         <td>/[username]/favorites</td>
         <td>POST</td>
-        <td>JSON object data about the movie. Example: {"title": "Wild at Heart"}</td>
+        <td>JSON object data about the movie. Example: <br><span>{"title": "Wild at Heart"}</span></td>
         <td>A text message – added to favorites</td>
       </tr>
       <tr>
