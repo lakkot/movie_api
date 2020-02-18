@@ -1,39 +1,3 @@
-//databases for example purposes
-
-/*
-let bestMovies = [
-  {title: 'Wild at Heart', director: 'David Lynch', genre: ['road', 'romance'], image: './img/wild_at_heart.jpg', id: 1},
-  {title: 'Pulp Fiction', director: 'Quentin Tarantino', genre: ['indie', 'crime'], image: './img/pulp_fiction.jpg', id: 2},
-  {title: 'Rashomon', director: 'Akira Kurosawa', genre: ['crime', 'mystery'], image: './img/rashomon.jpg', id: 3},
-  {title: 'Dr. Strangelove', director: 'Stanley Kubrick', genre: ['war', 'comedy'], image: './img/dr_strangelove.jpg', id: 4},
-  {title: 'Down by Law', director: 'Jim Jarmusch', genre: ['indie', 'drama'], image: './img/down_by_law.jpg', id: 5},
-]
-
-let directors = [
-  {name: 'David Lynch', birth: '', death: '', bio: ''},
-  {name: 'Quentin Tarantino', birth: '', death: '', bio: ''},
-  {name: 'Stanley Kubrick', birth: '', death: '', bio: ''},
-  {name: 'Akira Kurosawa', birth: '', death: '', bio: ''},
-  {name: 'Jim Jarmusch', birth: '', death: '', bio: ''},
-]
-
-let genres = [
-  {name: 'road', description: 'A road movie is a film genre in which the main characters leave home on a road trip, typically altering the perspective from their everyday lives.'},
-  {name: 'romance', description: 'Romance film can be defined as a genre wherein the plot revolves around the love between two protagonists.'},
-  {name: 'indie', description: ''},
-  {name: 'crime', description: ''},
-  {name: 'mystery', description: ''},
-  {name: 'war', description: ''},
-  {name: 'comedy', description: ''},
-  {name: 'drama', description: ''},
-]
-
-let users = [
-  {username: 'user1', password: 'password1', email: 'user1@email.com', birth: '21.09.1989', id: 1},
-  {username: 'user2', password: 'password2', email: 'user2@email.com', birth: '14.06.1993', id: 2},
-  {username: 'user3', password: 'password3', email: 'user3@email.com', birth: '17.08.2000', id: 3}
-]
-*/
 //this will be created for each user so that favoties are not stored with passwords
 let userFavorites = []
 
@@ -45,6 +9,9 @@ const express = require('express'),
   uuid = require('uuid'),
   mongoose = require('mongoose');
 
+  const passport = require('passport');
+  require('./passport');
+
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
@@ -55,6 +22,9 @@ mongoose.set('useFindAndModify', false);
 
 const app = express();
 app.use(bodyParser.json());
+//importing authentication file into the project
+var auth = require('./auth')(app); //this needs to be put ALWAYS after app.use(bodyParser.json());
+
 
 /*****middleware functions*****/
 //reroute requests for static pages to public folder
@@ -76,7 +46,7 @@ app.get ('/', function(req, res) {
 });
 
 //show this if /movies site is requested (i.e. pull the table)
-app.get('/movies', function(req, res) {
+app.get('/movies', passport.authenticate('jwt', { session: false }), function(req, res) {
   Movies.find().then(function(movies) {res.status(201).json(movies)})
   .catch(function(err) {
     console.error(err);
@@ -84,22 +54,24 @@ app.get('/movies', function(req, res) {
   });
 });
 
+
+
 //get info by movie title
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({title : req.params.title})
   .then((movie) => {res.json(movie)})
   .catch((err) => {console.error(err); res.status(500).send("Error: " + err);});
 });
 
 //return data about movie genres
-app.get('/movies/genre/:name', (req, res) => {
+app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne( {'genre.name' : req.params.name})
   .then((movie) => {res.json(movie.genre)})
   .catch((err) => {console.error(err); res.status(500).send("Error: " + err);});
 });
 
 //return data about directors
-app.get('/movies/director/:name', (req, res) => {
+app.get('/movies/director/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne( {'director.name' : req.params.name})
   .then((movie) => {res.json(movie.director)})
   .catch((err) => {console.error(err); res.status(500).send("Error: " + err);});
@@ -129,8 +101,25 @@ app.post('/users', function(req, res) {
   });
 });
 
+/* - parameter to check username password and email correctness. insert as second argument after cleaning ub users DB
+[
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed"
+    ).isAlphanumeric(),
+    check("Password", "Password is required")
+      .not()
+      .isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail()
+  ]
+  */
+
+
+
+
 //allow users to change user data
-app.put('/users/:username', function(req, res) {
+app.put('/users/:username', passport.authenticate('jwt', { session: false }), function(req, res) {
   Users.findOneAndUpdate({ username : req.params.username }, { $set :
   {
     username : req.body.username,
@@ -150,14 +139,14 @@ app.put('/users/:username', function(req, res) {
 });
 
 //check user data by username
-app.get('/users/:username', (req, res) => {
+app.get('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ username : req.params.username})
   .then((user) => {res.json(user)})
   .catch((err) => {console.error(err); res.status(500).send("Error: " + err);});
 });
 
 //allow users do deregister
-app.delete('/users/:id', (req, res) => {
+app.delete('/users/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({_id : req.params.id})
   .then(function(user) {
     if(!user) {
@@ -173,7 +162,7 @@ app.delete('/users/:id', (req, res) => {
 });
 
 //get list of favorite movies for a user
-app.get('/users/:username/movies', (req, res) => {
+app.get('/users/:username/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ username : req.params.username})
   .then((user) => {res.json(user.favMovies)})
   .catch((err) => {console.error(err); res.status(500).send("Error: " + err);});
@@ -181,7 +170,7 @@ app.get('/users/:username/movies', (req, res) => {
 
 
 //adding movie to user favorites list
-app.post('/users/:username/movies/:movieID', function(req, res) {
+app.post('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), function(req, res) {
   Users.findOneAndUpdate({username : req.params.username},
     { $push : { favMovies : req.params.movieID} },
   { new : true},
@@ -196,7 +185,7 @@ app.post('/users/:username/movies/:movieID', function(req, res) {
 });
 
 //removing movies from favorites list
-app.delete('/users/:username/movies/:movieID', function(req, res) {
+app.delete('/users/:username/movies/:movieID', passport.authenticate('jwt', { session: false }), function(req, res) {
   Users.findOneAndUpdate({username: req.params.username},
     { $pull : {favMovies : req.params.movieID} },
     { new : true },
@@ -212,7 +201,7 @@ app.delete('/users/:username/movies/:movieID', function(req, res) {
 
 /*********************admin functions********************************/
 //add movie to database
-app.post('/movies', (req, res) => {
+app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({title : req.body.title})
   .then((movie) => {
     if(movie) {
@@ -237,7 +226,7 @@ app.post('/movies', (req, res) => {
   });
 
   //delete form database
-  app.delete('/movies/:id', (req, res) => {
+  app.delete('/movies/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.findOneAndRemove({_id : req.params.id})
     .then(function(user) {
       if(!user) {
