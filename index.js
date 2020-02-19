@@ -39,7 +39,7 @@ app.use(function(err, req, res, next) {
   res.status(500).send('This one didn\'t go well')
 });
 //enable API to be used only by authenticated domains (CORS)
-var allowedOrigins = ['http://localhost:8080', 'https://test.com']
+var allowedOrigins = ['http://localhost:8080', 'https://myflix-db.herokuapp.com/']
 
 app.use(cors({
   oriign: function(origin, callback) {
