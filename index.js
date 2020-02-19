@@ -16,7 +16,8 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
+mongoose.connect('mongodb+srv://myMoviesDBadmin:sk0wyc3y>@mymoviesdb-jrstu.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true});
+//mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 
 const app = express();
