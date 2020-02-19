@@ -6,7 +6,8 @@ const express = require('express'),
   uuid = require('uuid'),
   mongoose = require('mongoose'),
   passport = require('passport'),
-  const cors =require('cors');
+  cors =require('cors'),
+  { check, validationResult } = require('express-validator');
 
 require('./passport');
 
@@ -90,49 +91,59 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
 });
 
 //adding new users
-app.post('/users', function(req, res) {
-  var hashedPassword = Users.hashPassword(req.body.password)
-  Users.findOne({username: req.body.username}).then(function(user) {
-    if (user) {
-      return res.status(400).send(req.body.username + ' already exists');
-    } else {
-      Users.create({
-        username: req.body.username,
-        password: hashedPassword,
-        email: req.body.email,
-        birthday: req.body.birthday
-      })
-      .then(function(user) {res.status(201).json(user)})
-      .catch(function(error) {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-      })
+app.post('/users',
+  [
+    check('username', 'username needs to be at least 6 characters long').isLength({min: 5}),
+    check('username', 'Use alphanumeric characters only').isAlphanumeric(),
+    check('password', 'Password required').not().isEmpty(),
+    check('email', 'Email is not valid').isEmail()
+  ], (req, res) => {
+    var errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(422).jon({errors: errors.array()});
     }
-  }).catch(function(error) {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
+
+    var hashedPassword = Users.hashPassword(req.body.password)
+    Users.findOne({username: req.body.username}).then(function(user) {
+      if (user) {
+        return res.status(400).send(req.body.username + ' already exists');
+      } else {
+        Users.create({
+          username: req.body.username,
+          password: hashedPassword,
+          email: req.body.email,
+          birthday: req.body.birthday
+        })
+        .then(function(user) {res.status(201).json(user)})
+        .catch(function(error) {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    }).catch(function(error) {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
   });
 });
 
-/* - parameter to check username password and email correctness. insert as second argument after cleaning ub users DB
-[
-    check("Username", "Username is required").isLength({ min: 5 }),
-    check(
-      "Username",
-      "Username contains non alphanumeric characters - not allowed"
-    ).isAlphanumeric(),
-    check("Password", "Password is required")
-      .not()
-      .isEmpty(),
-    check("Email", "Email does not appear to be valid").isEmail()
-  ]
-  */
+
 
 
 
 
 //allow users to change user data
-app.put('/users/:username', passport.authenticate('jwt', { session: false }), function(req, res) {
+app.put('/users/:username', passport.authenticate('jwt', { session: false }),
+  [
+    check('username', 'username needs to be at least 6 characters long').isLength({min: 5}),
+    check('username', 'Use alphanumeric characters only').isAlphanumeric(),
+    check('password', 'Password required').not().isEmpty(),
+    check('email', 'Email is not valid').isEmail()
+  ], (req, res) => {
+    var errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(422).jon({errors: errors.array()});
+    }
+
   Users.findOneAndUpdate({ username : req.params.username }, { $set :
   {
     username : req.body.username,
