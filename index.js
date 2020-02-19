@@ -1,16 +1,14 @@
-//this will be created for each user so that favoties are not stored with passwords
-let userFavorites = []
-
 //calling modules
 const express = require('express'),
   fs = require('fs'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  passport = require('passport'),
+  const cors =require('cors');
 
-  const passport = require('passport');
-  require('./passport');
+require('./passport');
 
 const Models = require('./models.js');
 
@@ -21,12 +19,11 @@ mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 
 const app = express();
+
+/*****middleware functions*****/
 app.use(bodyParser.json());
 //importing authentication file into the project
 var auth = require('./auth')(app); //this needs to be put ALWAYS after app.use(bodyParser.json());
-
-
-/*****middleware functions*****/
 //reroute requests for static pages to public folder
 //app.use(express.static('public')); - this will only work if you put .html at the end of the adress
 app.use(express.static('public',{extensions:['html']}));
@@ -39,6 +36,21 @@ app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('This one didn\'t go well')
 });
+//enable API to be used only by authenticated domains (CORS)
+var allowedOrigins = ['http://localhost:8080', 'https://test.com']
+
+app.use(cors({
+  oriign: function(origin, callback) {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1) { //return if origin is not on the list of allowed origins (hence returning index of -1)
+      var message = 'Domain' + origin + ' is not allowed to use this API according to CORS policy';
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
+
+/**********************API endpoints******************************/
 
 //show this if nothing after / is given in website adress request
 app.get ('/', function(req, res) {
@@ -79,13 +91,14 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
 
 //adding new users
 app.post('/users', function(req, res) {
+  var hashedPassword = Users.hashPassword(req.body.password)
   Users.findOne({username: req.body.username}).then(function(user) {
     if (user) {
       return res.status(400).send(req.body.username + ' already exists');
     } else {
       Users.create({
         username: req.body.username,
-        password: req.body.password,
+        password: hashedPassword,
         email: req.body.email,
         birthday: req.body.birthday
       })
