@@ -23,7 +23,7 @@ mongoose.set('useFindAndModify', false);
 const app = express();
 
 /*****middleware functions*****/
-app.use(bodyParser.json());
+app.use(express.json());
 //importing authentication file into the project
 var auth = require('./auth')(app); //this needs to be put ALWAYS after app.use(bodyParser.json());
 //reroute requests for static pages to public folder
