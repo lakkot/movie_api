@@ -267,6 +267,6 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res)
   });
 
 //listen for requests
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log('I\'m always listening.....(on port 8080)')
 });
