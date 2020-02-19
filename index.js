@@ -271,7 +271,7 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res)
 app.listen(8080, () => {
   console.log('I\'m always listening.....(on port 8080)')
 });
-*/
-app.listen(process.env.PORT || 3000, function(){
+*/node
+app.listen(process.env.port || 3000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
