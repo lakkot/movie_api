@@ -4,7 +4,8 @@ const express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  bcrypt = require('bcrypt');
 
   const passport = require('passport');
   require('./passport');
@@ -76,13 +77,14 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
 
 //adding new users
 app.post('/users', function(req, res) {
+  var hashedPassword = Users.hashPassword(req.body.password);
   Users.findOne({username: req.body.username}).then(function(user) {
     if (user) {
       return res.status(400).send(req.body.username + ' already exists');
     } else {
       Users.create({
         username: req.body.username,
-        password: req.body.password,
+        password: hashedPassword,
         email: req.body.email,
         birthday: req.body.birthday
       })
