@@ -4,28 +4,26 @@ const express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
-  mongoose = require('mongoose'),
-  passport = require('passport'),
-  cors =require('cors'),
-  { check, validationResult } = require('express-validator');
+  mongoose = require('mongoose');
 
-require('./passport');
+  const passport = require('passport');
+  require('./passport');
 
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb+srv://myMoviesDBadmin:sk0wyc3y>@mymoviesdb-jrstu.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true});
-//mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 
 const app = express();
-
-/*****middleware functions*****/
-app.use(express.json());
+app.use(bodyParser.json());
 //importing authentication file into the project
 var auth = require('./auth')(app); //this needs to be put ALWAYS after app.use(bodyParser.json());
+
+
+/*****middleware functions*****/
 //reroute requests for static pages to public folder
 //app.use(express.static('public')); - this will only work if you put .html at the end of the adress
 app.use(express.static('public',{extensions:['html']}));
@@ -38,25 +36,10 @@ app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('This one didn\'t go well')
 });
-//enable API to be used only by authenticated domains (CORS)
-var allowedOrigins = ['http://localhost:8080', 'https://myflix-db.herokuapp.com/']
-
-app.use(cors({
-  oriign: function(origin, callback) {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1) { //return if origin is not on the list of allowed origins (hence returning index of -1)
-      var message = 'Domain' + origin + ' is not allowed to use this API according to CORS policy';
-      return callback(new Error(message), false);
-    }
-    return callback(null, true);
-  }
-}));
-
-/**********************API endpoints******************************/
 
 //show this if nothing after / is given in website adress request
 app.get ('/', function(req, res) {
-  res.redirect('/index.html');
+  res.send('You wanted a list of movies but it is me, the message!!')
 });
 
 //show this if /movies site is requested (i.e. pull the table)
@@ -92,59 +75,48 @@ app.get('/movies/director/:name', passport.authenticate('jwt', { session: false 
 });
 
 //adding new users
-app.post('/users',
-  [
-    check('username', 'username needs to be at least 6 characters long').isLength({min: 5}),
-    check('username', 'Use alphanumeric characters only').isAlphanumeric(),
-    check('password', 'Password required').not().isEmpty(),
-    check('email', 'Email is not valid').isEmail()
-  ], (req, res) => {
-    var errors = validationResult(req);
-    if(!errors.isEmpty()) {
-      return res.status(422).jon({errors: errors.array()});
+app.post('/users', function(req, res) {
+  Users.findOne({username: req.body.username}).then(function(user) {
+    if (user) {
+      return res.status(400).send(req.body.username + ' already exists');
+    } else {
+      Users.create({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        birthday: req.body.birthday
+      })
+      .then(function(user) {res.status(201).json(user)})
+      .catch(function(error) {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      })
     }
-
-    var hashedPassword = Users.hashPassword(req.body.password)
-    Users.findOne({username: req.body.username}).then(function(user) {
-      if (user) {
-        return res.status(400).send(req.body.username + ' already exists');
-      } else {
-        Users.create({
-          username: req.body.username,
-          password: hashedPassword,
-          email: req.body.email,
-          birthday: req.body.birthday
-        })
-        .then(function(user) {res.status(201).json(user)})
-        .catch(function(error) {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
-      }
-    }).catch(function(error) {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
+  }).catch(function(error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
   });
 });
 
-
+/* - parameter to check username password and email correctness. insert as second argument after cleaning ub users DB
+[
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed"
+    ).isAlphanumeric(),
+    check("Password", "Password is required")
+      .not()
+      .isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail()
+  ]
+  */
 
 
 
 
 //allow users to change user data
-app.put('/users/:username', passport.authenticate('jwt', { session: false }),
-  [
-    check('username', 'username needs to be at least 6 characters long').isLength({min: 5}),
-    check('username', 'Use alphanumeric characters only').isAlphanumeric(),
-    check('password', 'Password required').not().isEmpty(),
-    check('email', 'Email is not valid').isEmail()
-  ], (req, res) => {
-    var errors = validationResult(req);
-    if(!errors.isEmpty()) {
-      return res.status(422).jon({errors: errors.array()});
-    }
-
+app.put('/users/:username', passport.authenticate('jwt', { session: false }), function(req, res) {
   Users.findOneAndUpdate({ username : req.params.username }, { $set :
   {
     username : req.body.username,
@@ -267,11 +239,6 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res)
   });
 
 //listen for requests
-/*
 app.listen(8080, () => {
   console.log('I\'m always listening.....(on port 8080)')
-});
-*/node
-app.listen(process.env.port || 3000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
