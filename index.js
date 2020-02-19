@@ -56,7 +56,7 @@ app.use(cors({
 
 //show this if nothing after / is given in website adress request
 app.get ('/', function(req, res) {
-  res.send('You wanted a list of movies but it is me, the message!!')
+  res.redirect('/index.html');
 });
 
 //show this if /movies site is requested (i.e. pull the table)
@@ -267,6 +267,11 @@ app.post('/movies', passport.authenticate('jwt', { session: false }), (req, res)
   });
 
 //listen for requests
+/*
 app.listen(8080, () => {
   console.log('I\'m always listening.....(on port 8080)')
+});
+*/
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });
