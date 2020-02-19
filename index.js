@@ -18,8 +18,8 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb+srv://myMoviesDBadmin:sk0wyc3y@mymoviesdb-jrstu.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true});
-//mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
+//mongoose.connect('mongodb+srv://myMoviesDBadmin:sk0wyc3y@mymoviesdb-jrstu.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
 mongoose.set('useFindAndModify', false);
 
 const app = express();
@@ -48,7 +48,7 @@ app.get ('/', function(req, res) {
 });
 
 //show this if /movies site is requested (i.e. pull the table)
-app.get('/movies', { session: false }), function(req, res) {
+app.get('/movies', passport.authenticate('jwt', { session: false }), function(req, res) {
   Movies.find().then(function(movies) {res.status(201).json(movies)})
   .catch(function(err) {
     console.error(err);
@@ -114,6 +114,23 @@ app.post('/users',
       res.status(500).send('Error: ' + error);
   });
 });
+
+/* - parameter to check username password and email correctness. insert as second argument after cleaning ub users DB
+[
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed"
+    ).isAlphanumeric(),
+    check("Password", "Password is required")
+      .not()
+      .isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail()
+  ]
+  */
+
+
+
 
 //allow users to change user data
 app.put('/users/:username', passport.authenticate('jwt', { session: false }),
