@@ -90,7 +90,7 @@ app.post('/users',
   ], (req, res) => {
     var errors = validationResult(req);
     if(!errors.isEmpty()) {
-      return res.status(422).jon({errors: errors.array()});
+      return res.status(422).json({errors: errors.array()});
     }
 
     var hashedPassword = Users.hashPassword(req.body.password)
@@ -116,23 +116,6 @@ app.post('/users',
   });
 });
 
-/* - parameter to check username password and email correctness. insert as second argument after cleaning ub users DB
-[
-    check("Username", "Username is required").isLength({ min: 5 }),
-    check(
-      "Username",
-      "Username contains non alphanumeric characters - not allowed"
-    ).isAlphanumeric(),
-    check("Password", "Password is required")
-      .not()
-      .isEmpty(),
-    check("Email", "Email does not appear to be valid").isEmail()
-  ]
-  */
-
-
-
-
 //allow users to change user data
 app.put('/users/:username', passport.authenticate('jwt', { session: false }),
   [
@@ -143,7 +126,7 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }),
   ], (req, res) => {
     var errors = validationResult(req);
     if(!errors.isEmpty()) {
-      return res.status(422).jon({errors: errors.array()});
+      return res.status(422).json({errors: errors.array()});
     }
 
   var hashedPassword = Users.hashPassword(req.body.Password);
