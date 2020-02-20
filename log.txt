@@ -1,3 +1,2 @@
-::ffff:127.0.0.1 - - [19/Feb/2020:19:11:03 +0000] "POST /users/?username=userauth&password=passwordauth HTTP/1.1" 201 220
-::ffff:127.0.0.1 - - [19/Feb/2020:19:11:18 +0000] "GET /movies HTTP/1.1" 401 -
-::ffff:127.0.0.1 - - [19/Feb/2020:19:11:22 +0000] "GET /movies HTTP/1.1" 201 11415
+::ffff:127.0.0.1 - - [20/Feb/2020:08:25:54 +0000] "POST /users/ HTTP/1.1" 422 110
+::ffff:127.0.0.1 - - [20/Feb/2020:08:26:29 +0000] "POST /users/ HTTP/1.1" 422 304
