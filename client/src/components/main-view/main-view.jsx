@@ -3,6 +3,10 @@ import axios from 'axios';
 
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
+import { LoginView } from '../login-view/login-view';
+
+import './main-view.scss';
+
 
 
 export class MainView extends React.Component {
@@ -12,7 +16,8 @@ export class MainView extends React.Component {
 
     this.state = {
       movies: null,
-      selectedMovie: null
+      selectedMovie: null,
+      user: null
     };
   }
 
@@ -34,23 +39,30 @@ export class MainView extends React.Component {
     this.setState({ selectedMovie: movie });
   }
 
+  onLoggedIn(user) {
+    this.setState({user});
+  }
+
 
   render() {
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
-    const { movies, selectedMovie } = this.state;
+    const { movies, selectedMovie, user } = this.state;
 
+    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
 
     return (
-      <div className="main-view">
+      <div className="col container">
+      <div className="main-view row mx-auto movies-list">
         {selectedMovie
           ? <MovieView movie={selectedMovie} onClick={() => this.onMovieClick(null)} />
           : movies.map(movie => (
             <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
           ))
         }
+      </div>
       </div>
     );
   }
