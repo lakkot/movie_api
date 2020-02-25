@@ -6,6 +6,7 @@ export class MovieView extends React.Component {
     this.state = {}
   }
 
+
   render() {
     const { movie, onClick } = this.props;
 
@@ -18,6 +19,7 @@ export class MovieView extends React.Component {
       <div className="movie-view">
         <div className="button-pane">
           <button onClick={() => onClick()} className="button">go back</button>
+
         </div>
         <img className="movie-poster" src={movie.imageURL} />
         <div className="movie-title">
