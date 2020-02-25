@@ -1,6 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 
+import { MovieCard } from '../movie-card/movie-card';
+
+
+
 export class MainView extends React.Component {
 
   constructor() {
@@ -11,9 +15,7 @@ export class MainView extends React.Component {
     };
   }
 
-  // One of the "hooks" available in a React Component
   componentDidMount() {
-    //let dbUrl = 'https://mymovies-database.herokuapp.com'
     axios.get('https://mymovies-database.herokuapp.com/movies')
       .then(response => {
         // Assign the result to the state
@@ -21,7 +23,6 @@ export class MainView extends React.Component {
           movies: response.data
 
         });
-        console.log(movies);
       })
       .catch(function (error) {
         console.log(error);
@@ -40,7 +41,7 @@ export class MainView extends React.Component {
     return (
       <div className="main-view">
         {movies.map(movie => (
-          <div className="movie-card" key={movie._id}>{movie.title}</div>
+          <MovieCard key={movie._id} movie={movie} />
         ))}
       </div>
     );
