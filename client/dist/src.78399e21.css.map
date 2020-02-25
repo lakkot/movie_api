@@ -1,1 +1,0 @@
-{"version":3,"sources":["index.scss"],"names":[],"mappings":"AAEA;EACE,OAHM;;;AAMR;EACE;;;AAGF;EACE;EACA","file":"src.78399e21.css","sourceRoot":"../src","sourcesContent":["$color: steelblue;\r\n\r\n.my-flix {\r\n  color: $color;\r\n}\r\n\r\nimg {\r\n  width: 300px;\r\n}\r\n\r\n.button {\r\n  width: 80px;\r\n  height: 20px;\r\n}"]}
