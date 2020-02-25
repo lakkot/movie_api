@@ -10,7 +10,7 @@ export class MovieCard extends React.Component {
   render() {
     const { movie, onClick } = this.props;
     return (
-      <Card style={{width: '16rem'}}>
+      <Card className="ml-1 mt-1 card" style={{width: '16rem'}}>
       <Card.Img className="card-image" variant="top" src={movie.imageURL} />
       <Card.Body>
         <Card.Title >

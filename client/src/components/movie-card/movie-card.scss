@@ -1,11 +1,17 @@
+.card {
+border: 1px solid #555555;
+}
+
 .movie-description {
+  color: rgb(223, 219, 219);
+
   text-align: justify;
   font-size: 10px;
 }
 
 .card-title {
   text-align: center;
-  color: black;
+  color: rgb(223, 219, 219)  ;
   text-decoration: underline;
 }
 
