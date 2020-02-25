@@ -1,7 +1,11 @@
 {
   "dependencies": {
     "axios": "^0.19.2",
+    "prop-types": "^15.7.2",
     "react": "^16.12.0",
+    "react-b": "0.1.0-alpha.1",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "react-button": "^1.2.1",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
