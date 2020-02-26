@@ -26,20 +26,14 @@ export class MovieView extends React.Component {
 
       <Container>
         <Row>
-          <Col xs={12} md={6}>
-            <img className="movie-poster" src={movie.imageURL} />
-          </Col>
+          <Row className="button-pane">
+            <Button variant="secondary" type="button" className="back-button" onClick={() => onClick()}>go back</Button>
+          </Row>
           <Col xs={12} md={6} className="view-description">
-            <Row>
-              <div className="button-pane">
-                <Button variant="secondary" type="button" className="backbutton" onClick={() => onClick()} className="button">go back</Button>
-
-              </div>
-            </Row>
 
             <Row className="description-row movie-title">
-              <span className="label">Title: </span>
-              <span className="value">{movie.title}</span>
+              <p className="label">Title: </p>
+              <p className="value">{movie.title}</p>
             </Row>
             <Row className="description-row movie-description">
               <span className="label">Description: </span>
@@ -54,6 +48,9 @@ export class MovieView extends React.Component {
               <span className="label">Director: </span>
               <span className="value">{movie.director.name}</span>
             </Row>
+          </Col>
+          <Col xs={12} md={6}>
+            <img className="movie-poster" src={movie.imageURL} />
           </Col>
         </Row>
       </Container>
