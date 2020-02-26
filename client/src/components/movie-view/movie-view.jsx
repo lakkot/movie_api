@@ -30,22 +30,20 @@ export class MovieView extends React.Component {
             <Button variant="secondary" type="button" className="back-button" onClick={() => onClick()}>go back</Button>
           </Row>
           <Col xs={12} md={6} className="view-description">
-
-            <Row className="description-row movie-title">
-              <p className="label">Title: </p>
-              <p className="value">{movie.title}</p>
+            <Row className="movie-title">
+              <h1 className="value">{movie.title}</h1>
             </Row>
-            <Row className="description-row movie-description">
-              <span className="label">Description: </span>
-              <span className="value">{movie.description}</span>
+            <Row className="movie-description">
+              <p className="view-label label">Description: </p>
+              <p className="value description"> {movie.description}</p>
             </Row>
 
             <Row className="description-row movie-genre">
-              <span className="label">Genre: </span>
+              <span className="view-label label">Genre: </span>
               <span className="value">{movie.genre.name}</span>
             </Row>
             <Row className="description-row movie-director">
-              <span className="label">Director: </span>
+              <span className="view-label label">Director: </span>
               <span className="value">{movie.director.name}</span>
             </Row>
           </Col>
@@ -54,34 +52,6 @@ export class MovieView extends React.Component {
           </Col>
         </Row>
       </Container>
-      /*
-            <div className="movie-view">
-              <img className="movie-poster" src={movie.imageURL} />
-              <div className="button-pane">
-                <button onClick={() => onClick()} className="button">go back</button>
-      
-              </div>
-      
-              <div className="movie-title">
-                <span className="label">Title: </span>
-                <span className="value">{movie.title}</span>
-              </div>
-              <div className="movie-description">
-                <span className="label">Description: </span>
-                <span className="value">{movie.description}</span>
-              </div>
-      
-              <div className="movie-genre">
-                <span className="label">Genre: </span>
-                <span className="value">{movie.genre.name}</span>
-              </div>
-              <div className="movie-director">
-                <span className="label">Director: </span>
-                <span className="value">{movie.director.name}</span>
-              </div>
-            </div>
-      
-            */
     );
   }
 }
