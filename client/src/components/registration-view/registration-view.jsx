@@ -13,7 +13,7 @@ export function RegistrationView(props) {
 
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    //send data to mongo somehow
     console.log(username, password, email, birthday);
 
   }

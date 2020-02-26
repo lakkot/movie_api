@@ -4,8 +4,10 @@ import Button from 'react-bootstrap/Button';
 import './login-view.scss';
 
 export function LoginView(props) {
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { register, setRegister } = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +16,10 @@ export function LoginView(props) {
     props.onLoggedIn(username);
   };
 
-
+  const isRegistered = () => {
+    console.log('at least its connected');
+    ({ register: false })
+  }
 
   return (
     <div className="login-container">
@@ -28,11 +33,11 @@ export function LoginView(props) {
           <Form.Control type="text" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" />
         </Form.Group>
         <div className="button-area">
-          <Button variant="secondary" type="button" className="register-button" onClick={() => registerView}>Register</Button>
+          <Button variant="secondary" type="button" className="register-button" value={register} onClick={() => props.onClick()}> Register</Button>
           <Button variant="secondary" type="button" className="login-button" onClick={handleSubmit}>Login</Button>
         </div>
       </Form>
-    </div>
+    </div >
   );
 }
 
