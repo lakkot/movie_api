@@ -2,7 +2,7 @@ $text-color: rgb(223, 219, 219);
 
 .movie-poster {
   max-width: 100%;
-  max-height: 600px;
+  max-height: 700px;
 }
 
 .view-description {
@@ -14,7 +14,7 @@ $text-color: rgb(223, 219, 219);
   width: 100%;
   margin-bottom: 20px;
   display:flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .view-label {
