@@ -40,7 +40,7 @@ export class MainView extends React.Component {
   }
 
   onLoggedIn(user) {
-    this.setState({user});
+    this.setState({ user });
   }
 
 
@@ -55,14 +55,14 @@ export class MainView extends React.Component {
 
     return (
       <div className="col container">
-      <div className="main-view row mx-auto movies-list">
-        {selectedMovie
-          ? <MovieView movie={selectedMovie} onClick={() => this.onMovieClick(null)} />
-          : movies.map(movie => (
-            <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
-          ))
-        }
-      </div>
+        <div className="main-view row mx-auto movies-list">
+          {selectedMovie
+            ? <MovieView movie={selectedMovie} onClick={() => this.onMovieClick(null)} />
+            : movies.map(movie => (
+              <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
+            ))
+          }
+        </div>
       </div>
     );
   }

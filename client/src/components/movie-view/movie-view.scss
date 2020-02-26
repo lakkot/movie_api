@@ -1,0 +1,23 @@
+.movie-poster {
+  max-width: 100%;
+  max-height: 600px;
+}
+
+.view-description {
+  text-align: left;
+  align-items: space-evenly;
+}
+
+.description-row {
+  height: 25%;
+}
+
+.button-pane {
+  text-align: right;
+}
+
+.backbutton {
+  border: 1px solid red;
+  color: black !important;
+  margin-right: 0;
+}
