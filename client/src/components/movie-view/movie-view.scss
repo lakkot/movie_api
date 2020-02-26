@@ -12,7 +12,7 @@ $text-color: rgb(223, 219, 219);
 
 .button-pane {
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   display:flex;
   justify-content: flex-end;
 }
@@ -38,5 +38,9 @@ $text-color: rgb(223, 219, 219);
 .description-row {
   height: 10%;
   color: $text-color;
+}
+
+.container {
+  padding-top: 20px;
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import './login-view.scss'
+import './login-view.scss';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
@@ -12,7 +12,9 @@ export function LoginView(props) {
     console.log(username, password);
     // Send a request to the server for authentication then call props.onLoggedIn(username)
     props.onLoggedIn(username);
-  }
+  };
+
+
 
   return (
     <div className="login-container">
@@ -26,6 +28,7 @@ export function LoginView(props) {
           <Form.Control type="text" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" />
         </Form.Group>
         <div className="button-area">
+          <Button variant="secondary" type="button" className="register-button" onClick={() => registerView}>Register</Button>
           <Button variant="secondary" type="button" className="login-button" onClick={handleSubmit}>Login</Button>
         </div>
       </Form>
