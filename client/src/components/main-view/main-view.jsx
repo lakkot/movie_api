@@ -50,12 +50,19 @@ export class MainView extends React.Component {
     console.log('at least its connected!');
     this.setState({ register: false })
   }
+
+  dontWantToRegister = () => {
+    this.setState({ register: null })
+  }
+
+
+
   render() {
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
     const { movies, selectedMovie, user, register } = this.state;
 
-    if (register === false) return <RegistrationView />
+    if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />
 
     if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} onClick={() => this.isRegistered()} />
 

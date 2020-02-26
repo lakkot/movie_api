@@ -38,6 +38,7 @@ export function RegistrationView(props) {
           <Form.Control type="date" value={birthday} onChange={e => createBirthday(e.target.value)} />
         </Form.Group>
         <div className="register-button-area">
+          <Button variant="secondary" type="button" className="register-button" onClick={() => props.onClick()}>Cancel</Button>
           <Button variant="secondary" type="button" className="register-button" onClick={handleSubmit}>Submit</Button>
         </div>
       </Form>

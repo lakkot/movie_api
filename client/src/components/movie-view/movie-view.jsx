@@ -24,7 +24,7 @@ export class MovieView extends React.Component {
 
     return (
 
-      <Container className="container">
+      <Container className="view-container">
         <Row>
           <Row className="button-pane">
             <Button variant="secondary" type="button" className="back-button" onClick={() => onClick()}>go back</Button>
