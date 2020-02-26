@@ -13,11 +13,13 @@
 }
 
 .button-pane {
-  text-align: right;
+  width: 100%;
+  border: 1px solid red;
 }
 
-.backbutton {
-  border: 1px solid red;
-  color: black !important;
+.back-button {
   margin-right: 0;
+
+  right: 0;
 }
+
