@@ -5,14 +5,17 @@ import Button from 'react-bootstrap/Button';
 import './registration-view.scss'
 
 export function RegistrationView(props) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, createUsername] = useState('');
+  const [password, createPassword] = useState('');
+  const [email, createEmail] = useState('');
+  const [birthday, createBirthday] = useState('');
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password);
-    // Send a request to the server for authentication then call props.onLoggedIn(username)
-    props.onLoggedIn(username);
+    console.log(username, password, email, birthday);
+
   }
 
   return (
@@ -30,8 +33,11 @@ export function RegistrationView(props) {
           <Form.Label className="register-label">Email address</Form.Label>
           <Form.Control type="email" value={email} onChange={e => createEmail(e.target.value)} placeholder="email" />
         </Form.Group>
-
-        <div className="button-area">
+        <Form.Group controlId="exampleForm.ControlInput1">
+          <Form.Label className="register-label">Date of Birth</Form.Label>
+          <Form.Control type="date" value={birthday} onChange={e => createBirthday(e.target.value)} />
+        </Form.Group>
+        <div className="register-button-area">
           <Button variant="secondary" type="button" className="register-button" onClick={handleSubmit}>Submit</Button>
         </div>
       </Form>
