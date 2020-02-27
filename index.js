@@ -18,9 +18,8 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb+srv://myMoviesDBadmin:sk0wyc3y@mymoviesdb-jrstu.mongodb.net/moviesDB?retryWrites=true&w=majority', { useNewUrlParser: true });
-
-//mongoose.connect('mongodb://localhost:27017/moviesDB', {useNewUrlParser: true});
+//mongoose.connect('mongodb+srv://myMoviesDBadmin:sk0wyc3y@mymoviesdb-jrstu.mongodb.net/moviesDB?retryWrites=true&w=majority', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/moviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set('useFindAndModify', false);
 
 const app = express();
@@ -28,6 +27,10 @@ app.use(bodyParser.json());
 //importing authentication file into the project
 var auth = require('./auth')(app); //this needs to be put ALWAYS after app.use(bodyParser.json());
 
+
+app.use(cors({ origin: 'http://localhost:1234' }));
+
+/*
 var allowedOrigins = ['http://localhost:1234'];
 
 app.use(cors({
@@ -40,7 +43,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-
+*/
 
 /*****middleware functions*****/
 //reroute requests for static pages to public folder
