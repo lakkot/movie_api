@@ -65,7 +65,7 @@ app.get('/', function (req, res) {
 });
 
 //show this if /movies site is requested (i.e. pull the table)
-app.get('/movies', function (req, res) {
+app.get('/movies', passport.authenticate('jwt', { session: false }), function (req, res) {
   Movies.find().then(function (movies) { res.status(201).json(movies) })
     .catch(function (err) {
       console.error(err);
