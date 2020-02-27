@@ -69,7 +69,6 @@ export class MainView extends React.Component {
   }
 
   isRegistered = () => {
-    console.log('at least its connected!');
     this.setState({ register: false })
   }
 
