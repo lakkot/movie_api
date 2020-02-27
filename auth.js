@@ -15,7 +15,7 @@ function generateJWTToken(user) {
 
 module.exports = (router) => {
   router.post('/login', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    //res.header("Access-Control-Allow-Origin", "*");
     passport.authenticate('local', { session: false }, (error, user, info) => {
       if (error || !user) {
         return res.status(400).json({
