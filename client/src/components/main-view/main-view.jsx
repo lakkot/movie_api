@@ -42,8 +42,15 @@ export class MainView extends React.Component {
     this.setState({ selectedMovie: movie });
   }
 
-  onLoggedIn(user) {
-    this.setState({ user });
+  onLoggedIn(authData) {
+    console.log(authData);
+    this.setState({
+      user: authData.username
+    });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.username);
+    this.getMovies(authData.token);
   }
 
   isRegistered = () => {
