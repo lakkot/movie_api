@@ -28,11 +28,6 @@ export function LoginView(props) {
       });
   };
 
-  const isRegistered = () => {
-    console.log('at least its connected');
-    ({ register: false })
-  }
-
   return (
     <div className="login-container">
       <Form className="col-4 login-form">
