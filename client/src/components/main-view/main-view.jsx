@@ -24,6 +24,8 @@ export class MainView extends React.Component {
     };
   }
 
+
+
   componentDidMount() {
     axios.get(/*'http://127.0.0.1:8080/movies'*/'https://mymovies-database.herokuapp.com/movies')
       .then(response => {
@@ -42,17 +44,6 @@ export class MainView extends React.Component {
     this.setState({ selectedMovie: movie });
   }
 
-  onLoggedIn(authData) {
-    console.log(authData);
-    this.setState({
-      user: authData.user.username
-    });
-
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.user.username);
-    this.getMovies(authData.token);
-  }
-
   getMovies(token) {
     axios.get('https://mymovies-database.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
@@ -67,6 +58,19 @@ export class MainView extends React.Component {
         console.log(error);
       });
   }
+
+  onLoggedIn(authData) {
+    console.log(authData);
+    this.setState({
+      user: authData.user.username
+    });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.username);
+    this.getMovies(authData.token);
+  }
+
+
 
   isRegistered = () => {
     this.setState({ register: false })
