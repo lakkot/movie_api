@@ -27,21 +27,30 @@ export class MainView extends React.Component {
 
 
   componentDidMount() {
-    axios.get(/*'http://127.0.0.1:8080/movies'*/'https://mymovies-database.herokuapp.com/movies')
-      .then(response => {
-        // Assign the result to the state
-        this.setState({
-          movies: response.data
-
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
       });
+      this.getMovies(accessToken);
+    }
   }
 
   onMovieClick(movie) {
     this.setState({ selectedMovie: movie });
+  }
+
+
+
+  onLoggedIn(authData) {
+    console.log(authData);
+    this.setState({
+      user: authData.user.username
+    });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.username);
+    this.getMovies(authData.token);
   }
 
   getMovies(token) {
@@ -58,18 +67,6 @@ export class MainView extends React.Component {
         console.log(error);
       });
   }
-
-  onLoggedIn(authData) {
-    console.log(authData);
-    this.setState({
-      user: authData.user.username
-    });
-
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.user.username);
-    this.getMovies(authData.token);
-  }
-
 
 
   isRegistered = () => {
