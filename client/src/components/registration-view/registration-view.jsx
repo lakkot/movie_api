@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -13,7 +14,23 @@ export function RegistrationView(props) {
 
 
   const handleSubmit = (e) => {
-    //send data to mongo somehow
+    axios.post('https://mymovies-database.herokuapp.com/users', {
+      username: username,
+      password: password,
+      email: email,
+      birthday: birthday
+    })
+      .then(response => {
+        const data = response.data;
+        console.log(data)
+        window.open('/', '_self'); //_self means that it will open in the same browser window
+      })
+      .catch(e => {
+        console.log('error in registration')
+      });
+
+
+
     console.log(username, password, email, birthday);
 
   }
