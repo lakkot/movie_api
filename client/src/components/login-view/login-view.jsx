@@ -29,21 +29,19 @@ export function LoginView(props) {
   };
 
   return (
-    <div className="login-container">
-      <Form className="col-4 login-form">
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label className="login-label">Username: </Form.Label>
-          <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="enter your username" />
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label className="login-label">Password</Form.Label>
-          <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" />
-        </Form.Group>
-        <div className="button-area">
-          <Button variant="secondary" type="button" className="register-button" value={register} onClick={() => props.onClick()}> Register</Button>
-          <Button variant="secondary" type="button" className="login-button" onClick={handleSubmit}>Login</Button>
-        </div>
-      </Form>
-    </div >
+    <Form className=" col-5 login-form">
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label className="login-label">Username: </Form.Label>
+        <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="enter your username" />
+      </Form.Group>
+      <Form.Group controlId="formBasicPassword">
+        <Form.Label className="login-label">Password</Form.Label>
+        <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" />
+      </Form.Group>
+      <div className="button-area">
+        <Button variant="secondary" type="button" className="register-button" value={register} onClick={() => props.onClick()}> Register</Button>
+        <Button variant="secondary" type="button" className="login-button" onClick={handleSubmit}>Login</Button>
+      </div>
+    </Form>
   );
 }
