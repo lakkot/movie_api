@@ -10,8 +10,7 @@ import { Link } from "react-router-dom";
 
 export function ProfileView(props) {
 
-  const { movies, userProfile, token } = props;
-
+  const { token } = props;
 
   const [username, setUsername] = useState(username);
   const [password, setPassword] = useState(password);
@@ -22,6 +21,7 @@ export function ProfileView(props) {
 
   const handleUpdate = (e) => {
     axios.put(`https://mymovies-database.herokuapp.com/users/${username}`, {
+      headers: { Authorization: `Bearer ${token}` },
       username: username,
       password: password,
       email: email,
@@ -41,9 +41,13 @@ export function ProfileView(props) {
 
   }
 
+  console.log(username);
+
   return (
 
-    <Form className="col-6 register-form">
+
+
+    < Form className="col-6 register-form" >
       <Form.Group controlId="formBasicUsername">
         <Form.Label className="profile-label">Username: </Form.Label>
         <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder={username} />
@@ -66,7 +70,7 @@ export function ProfileView(props) {
         </Link>
         <Button variant="secondary" type="button" className="register-button" onClick={handleUpdate}>Save</Button>
       </div>
-    </Form>
+    </Form >
 
   );
 }
