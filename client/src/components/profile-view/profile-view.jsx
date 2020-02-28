@@ -21,7 +21,7 @@ export function ProfileView(props) {
 
 
   const handleUpdate = (e) => {
-    axios.put('https://mymovies-database.herokuapp.com/users', {
+    axios.put(`https://mymovies-database.herokuapp.com/users/${username}`, {
       username: username,
       password: password,
       email: email,
