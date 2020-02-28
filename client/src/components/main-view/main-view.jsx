@@ -1,11 +1,15 @@
 import React from 'react';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
+import { DirectorView } from '../director-view/director-view';
+import { GenreView } from '../genre-view/genre-view';
 import { RegistrationView } from '../registration-view/registration-view';
 
 
@@ -19,7 +23,7 @@ export class MainView extends React.Component {
     super();
 
     this.state = {
-      movies: null,
+      movies: [],
       selectedMovie: null,
       user: null,
       register: null,
@@ -70,6 +74,11 @@ export class MainView extends React.Component {
       });
   }
 
+  logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/';
+  }
 
   isRegistered = () => {
     this.setState({ register: false })
@@ -88,23 +97,40 @@ export class MainView extends React.Component {
 
     if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />
 
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} onClick={() => this.isRegistered()} />
+    //if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} onClick={() => this.isRegistered()} />
 
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
 
     return (
-      <div className="col container">
-        <div className="main-view row mx-auto movies-list">
-          {selectedMovie
-            ? <MovieView movie={selectedMovie} onClick={() => this.onMovieClick(null)} />
-            : movies.map(movie => (
-              <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
-            ))
-          }
+      <Router>
+        <div className="container">
+          <div className="logout-button">
+            <Button variant="secondary" type="button" onClick={() => this.logout()}>log out</Button>
+          </div>
+          <div className="main-view row mx-auto movies-list">
+            <Route exact path="/" render={() => {
+              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} onClick={() => this.isRegistered()} />;
+              return movies.map(m => <MovieCard key={m._id} movie={m} />)
+            }
+            } />
+            <Route path="/register" render={() => <RegistrationView />} />
+            <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
+            <Route path="/genres/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view" />;
+              return <GenreView genre={movies.find(m => m.genre.name === match.params.name).genre} />
+            }
+            } />
+            <Route path="/directors/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view" />;
+              return <DirectorView director={movies.find(m => m.director.name === match.params.name).director} />
+            }
+            } />
+          </div>
         </div>
-      </div>
+      </Router>
+
     );
   }
 }
