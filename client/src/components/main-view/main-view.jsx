@@ -32,7 +32,8 @@ export class MainView extends React.Component {
       movies: [],
       selectedMovie: null,
       user: null,
-      register: null,
+      userData: [],
+      register: null
     };
   }
 
@@ -55,15 +56,23 @@ export class MainView extends React.Component {
 
 
   onLoggedIn(authData) {
-    console.log(authData);
     this.setState({
-      user: authData.user.username
+      user: authData.user.username,
+      userid: authData.user._id
     });
 
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.username);
     this.getMovies(authData.token);
+    this.getUser(authData.token);
+    console.log(authData.user);
+    console.log(authData.userData);
+
   }
+
+
+
+
 
   getMovies(token) {
     axios.get('https://mymovies-database.herokuapp.com/movies', {
@@ -79,6 +88,24 @@ export class MainView extends React.Component {
         console.log(error);
       });
   }
+
+  getUser(token) {
+    axios.get('https://mymovies-database.herokuapp.com/users/:username', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        // Assign the result to the state
+        this.setState({
+          userData: response.data
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  
+  
 
   logout = () => {
     localStorage.removeItem('token');
@@ -99,7 +126,7 @@ export class MainView extends React.Component {
   render() {
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
-    const { movies, selectedMovie, user, register } = this.state;
+    const { movies, user, register } = this.state;
 
     if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />
 
@@ -125,7 +152,7 @@ export class MainView extends React.Component {
             }
             } />
             <Route path="/register" render={() => <RegistrationView />} />
-            <Route path="/users/:username" render={() => <ProfileView />} />
+            <Route path="/users/:username" render={() => <ProfileView  />} />
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
