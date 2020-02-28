@@ -5,16 +5,23 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './profile-view.scss'
 
+import { Link } from "react-router-dom";
+
+
 export function ProfileView(props) {
-  const [username, createUsername] = useState('');
-  const [password, createPassword] = useState('');
-  const [email, createEmail] = useState('');
-  const [birthday, createBirthday] = useState('');
+
+  const { movies, userProfile, token } = props;
+
+
+  const [username, setUsername] = useState(username);
+  const [password, setPassword] = useState(password);
+  const [email, setEmail] = useState(email);
+  const [birthday, setBirthday] = useState(birthday);
 
 
 
-  const handleSubmit = (e) => {
-    axios.post('https://mymovies-database.herokuapp.com/users', {
+  const handleUpdate = (e) => {
+    axios.put('https://mymovies-database.herokuapp.com/users', {
       username: username,
       password: password,
       email: email,
@@ -23,10 +30,9 @@ export function ProfileView(props) {
       .then(response => {
         const data = response.data;
         console.log(data)
-        window.open('/', '_self'); //_self means that it will open in the same browser window
       })
       .catch(e => {
-        console.log('error in registration')
+        console.log('profile not updated')
       });
 
 
@@ -36,30 +42,32 @@ export function ProfileView(props) {
   }
 
   return (
-    <div className="register-container">
-      <Form className="col-4 register-form">
-        <Form.Group controlId="formBasicUsername">
-          <Form.Label className="profile-label">Username: </Form.Label>
-          <Form.Control type="text" value={username} onChange={e => createUsername(e.target.value)} placeholder="enter your username" />
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label className="profile-label">Password</Form.Label>
-          <Form.Control type="password" value={password} onChange={e => createPassword(e.target.value)} placeholder="password" />
-        </Form.Group>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label className="profile-label">Email address</Form.Label>
-          <Form.Control type="email" value={email} onChange={e => createEmail(e.target.value)} placeholder="email" />
-        </Form.Group>
-        <Form.Group controlId="exampleForm.ControlInput1">
-          <Form.Label className="profile-label">Date of Birth</Form.Label>
-          <Form.Control type="date" value={birthday} onChange={e => createBirthday(e.target.value)} />
-        </Form.Group>
-        <div className="profile-button-area">
-          <Button variant="secondary" type="button" className="register-button" onClick={() => props.onClick()}>Cancel</Button>
-          <Button variant="secondary" type="button" className="register-button" onClick={handleSubmit}>Submit</Button>
-        </div>
-      </Form>
-    </div>
+
+    <Form className="col-6 register-form">
+      <Form.Group controlId="formBasicUsername">
+        <Form.Label className="profile-label">Username: </Form.Label>
+        <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder={username} />
+      </Form.Group>
+      <Form.Group controlId="formBasicPassword">
+        <Form.Label className="profile-label">Password</Form.Label>
+        <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" />
+      </Form.Group>
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label className="profile-label">Email address</Form.Label>
+        <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email" />
+      </Form.Group>
+      <Form.Group controlId="exampleForm.ControlInput1">
+        <Form.Label className="profile-label">Date of Birth</Form.Label>
+        <Form.Control type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
+      </Form.Group>
+      <div className="profile-button-area">
+        <Link to={'/'}>
+          <Button variant="secondary" type="button" className="register-button">Cancel</Button>
+        </Link>
+        <Button variant="secondary" type="button" className="register-button" onClick={handleUpdate}>Save</Button>
+      </div>
+    </Form>
+
   );
 }
 
