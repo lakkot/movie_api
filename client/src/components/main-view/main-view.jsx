@@ -3,7 +3,11 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
 
+
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
@@ -11,6 +15,8 @@ import { LoginView } from '../login-view/login-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import { RegistrationView } from '../registration-view/registration-view';
+import { ProfileView } from '../profile-view/profile-view';
+
 
 
 import './main-view.scss';
@@ -107,6 +113,9 @@ export class MainView extends React.Component {
       <Router>
         <div className="container">
           <div className="logout-button">
+            <Link to={`/users/${user}`}>
+              <Button variant="secondary" type="button">user settings</Button>
+            </Link>
             <Button variant="secondary" type="button" onClick={() => this.logout()}>log out</Button>
           </div>
           <div className="main-view row mx-auto movies-list">
@@ -116,6 +125,7 @@ export class MainView extends React.Component {
             }
             } />
             <Route path="/register" render={() => <RegistrationView />} />
+            <Route path="/users/:username" render={() => <ProfileView />} />
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
