@@ -10,13 +10,13 @@ import { Link } from "react-router-dom";
 
 export function ProfileView(props) {
 
-  const { token } = props;
+  const { userData, token } = props;
 
   const [username, setUsername] = useState(username);
   const [password, setPassword] = useState(password);
   const [email, setEmail] = useState(email);
   const [birthday, setBirthday] = useState(birthday);
-
+console.log(userData);
 
 
   const handleUpdate = (e) => {
@@ -41,7 +41,6 @@ export function ProfileView(props) {
 
   }
 
-  console.log(username);
 
   return (
 
