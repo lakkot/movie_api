@@ -1,0 +1,40 @@
+$text-color: rgb(223, 219, 219);
+
+.director-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-pane {
+  width: 100%;
+  margin-bottom: 20px;
+  display:flex;
+  justify-content: flex-start;
+}
+
+.view-label {
+  padding-right: 5px;
+}
+
+.director-name {
+  margin-top: 50px;
+  color: $text-color;
+  height: 110px;
+}
+
+.bio {
+  text-align: justify;
+  color: $text-color;
+  min-height: 100px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.director-row {
+  width: 100%;
+  height: 80px;
+  color: $text-color;
+}
+
