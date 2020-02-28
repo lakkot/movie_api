@@ -4,6 +4,10 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+
+import { Link } from "react-router-dom";
+
+
 import './movie-view.scss'
 
 
@@ -27,7 +31,9 @@ export class MovieView extends React.Component {
       <Container className="view-container">
         <Row>
           <Row className="button-pane">
-            <Button variant="secondary" type="button" className="back-button" onClick={() => onClick()}>go back</Button>
+            <Link to={'/'}>
+              <Button variant="secondary" type="button" className="back-button">go back</Button>
+            </Link>
           </Row>
           <Col xs={12} md={6} className="view-description">
             <Row className="movie-title">
@@ -40,11 +46,16 @@ export class MovieView extends React.Component {
 
             <Row className="description-row movie-genre">
               <span className="view-label label">Genre: </span>
-              <span className="value">{movie.genre.name}</span>
+              <Link to={`/genres/${movie.genre.name}`}>
+                <span className="value">{movie.genre.name}</span>
+              </Link>
             </Row>
             <Row className="description-row movie-director">
               <span className="view-label label">Director: </span>
-              <span className="value">{movie.director.name}</span>
+              <Link to={`/directors/${movie.director.name}`}>
+                <span className="value">{movie.director.name}</span>
+              </Link>
+
             </Row>
           </Col>
           <Col xs={12} md={6}>
@@ -67,6 +78,5 @@ MovieView.propTypes = {
     director: PropTypes.shape({
       name: PropTypes.string
     }),
-  }).isRequired,
-  onClick: PropTypes.func.isRequired
+  }).isRequired
 };
