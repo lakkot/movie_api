@@ -16,6 +16,14 @@ import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { ProfileView } from '../profile-view/profile-view';
+import { UpdateUsername } from '../profile-view/update-username';
+import { UpdatePassword } from '../profile-view/update-password';
+import { UpdateEmail } from '../profile-view/update-email';
+import { UpdateBirthday} from '../profile-view/update-birthday';
+
+
+
+
 
 
 
@@ -33,7 +41,8 @@ export class MainView extends React.Component {
       selectedMovie: null,
       user: null,
       userData: [],
-      register: null
+      register: null,
+      username: null
     };
   }
 
@@ -46,6 +55,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem('user')
       });
       this.getMovies(accessToken);
+      this.getUser(accessToken);
     }
   }
 
@@ -87,10 +97,25 @@ export class MainView extends React.Component {
       });
   }
 
-  
-
-  
-  
+  getUser(token) {
+    let username = localStorage.getItem('user');
+    axios.get(`https://mymovies-database.herokuapp.com/users/${username}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        this.setState({
+          userData: response.data,
+          username: response.data.username,
+          password: response.data.password,
+          email: response.data.email,
+          birthday: response.data.birthday,
+          favMovies: response.data.favMovies
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   logout = () => {
     localStorage.removeItem('token');
@@ -124,11 +149,12 @@ export class MainView extends React.Component {
     return (
       <Router>
         <div className="container">
-          <div className="logout-button">
+          <div className="main-button-area">
             <Link to={`/users/${user}`}>
-              <Button variant="secondary" type="button">user settings</Button>
+              <Button variant="secondary" type="button" className="main-button">user profile</Button>
             </Link>
-            <Button variant="secondary" type="button" onClick={() => this.logout()}>log out</Button>
+            <Button variant="secondary" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
+
           </div>
           <div className="main-view row mx-auto movies-list">
             <Route exact path="/" render={() => {
@@ -138,6 +164,11 @@ export class MainView extends React.Component {
             } />
             <Route path="/register" render={() => <RegistrationView />} />
             <Route path="/users/:username" render={() => <ProfileView  />} />
+            <Route path="/update/:username" render={() => <UpdateUsername user={user}/>} />
+            <Route path="/password/:username" render={() => <UpdatePassword user={user}/>} />
+            <Route path="/email/:username" render={() => <UpdateEmail user={user}/>} />
+            <Route path="/birthday/:username" render={() => <UpdateBirthday user={user}/>} />
+
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
