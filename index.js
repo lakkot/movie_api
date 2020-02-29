@@ -138,7 +138,7 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }),
     check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
     check('username', 'Use alphanumeric characters only').isAlphanumeric(),
     //check('password', 'Password required').not().isEmpty(),
-    check('email', 'Email is not valid').isEmail()
+    //check('email', 'Email is not valid').isEmail()
   ], (req, res) => {
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -150,8 +150,8 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }),
       {
         username: req.body.username,
         //password: hashedPassword,
-        email: req.body.email,
-        birthday: req.body.birthday
+        //email: req.body.email,
+        //birthday: req.body.birthday
       }
     },
       { new: true },
