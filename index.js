@@ -165,6 +165,44 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }),
       })
 
   });
+
+  //allow users to change user data
+app.put('/password/:username', passport.authenticate('jwt', { session: false }),
+[
+  //check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
+  //check('username', 'Use alphanumeric characters only').isAlphanumeric(),
+  check('password', 'Password required').not().isEmpty(),
+  //check('email', 'Email is not valid').isEmail()
+], (req, res) => {
+  var errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  //var hashedPassword = Users.hashPassword(req.body.password);
+  Users.findOneAndUpdate({ username: req.params.username }, {
+    $set:
+    {
+      //username: req.body.username,
+      password: hashedPassword,
+      //email: req.body.email,
+      //birthday: req.body.birthday
+    }
+  },
+    { new: true },
+    function (err, updatedUser) {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser)
+      }
+    })
+
+});
+
+
+
+
 /*
   app.put('/users/:username', passport.authenticate('jwt', { session: false }),
   [
