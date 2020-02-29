@@ -3,8 +3,10 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import './profile-view.scss'
 import ListGroup from 'react-bootstrap/ListGroup';
+import Table from 'react-bootstrap/Table'
+import { format } from "date-fns";
+import './profile-view.scss'
 
 
 import { Link } from "react-router-dom";
@@ -19,9 +21,10 @@ export class ProfileView extends React.Component {
       email: null,
       birthday: null,
       userData: null,
-      favouriteMovies: []
+      favMovies: []
     };
   }
+
 
   componentDidMount() {
     //authentication
@@ -29,7 +32,9 @@ export class ProfileView extends React.Component {
     if (accessToken !== null) {
       this.getUser(accessToken);
     }
+
   }
+
 
   getUser(token) {
     let username = localStorage.getItem('user');
@@ -43,108 +48,104 @@ export class ProfileView extends React.Component {
           password: response.data.password,
           email: response.data.email,
           birthday: response.data.birthday,
-          favouriteMovies: response.data.favMovies
+          favMovies: response.data.favMovies
         });
+       
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
-  render() {
-    const { username, email, birthday } = this.state;
 
+  deleteProfile() {
+    axios.delete(`https://mymovies-database.herokuapp.com/users/${username}`,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
+      .then(res => {
+        alert('Do you really want to delete your account?')
+      })
+      .then(res => {
+        alert('Account was successfully deleted')
+      })
+      .then(res => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        this.setState({
+          user: null
+
+        });
+        window.open('/', '_self');
+      })
+      .catch(e => {
+        alert('Account could not be deleted ' + e)
+      });
+  }
+
+
+  render() {
+    const { username, email, birthday, favMovies } = this.state;
+    console.log(favMovies);
     return (
 
-       < Form className="col-6 register-form" >
-       <Form.Group controlId="formBasicUsername">
-         <Form.Label className="profile-label">Username: </Form.Label>
-         <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} />
-       </Form.Group>
+      <div className="col-8 mx-auto profile-container"> 
+        <Table hover variant="dark" className="table">
+          <tbody>
+            <tr>
+              <td>username</td>
+              <td>{username}</td>
+              <td>
+                <Link to={`/update/${username}`}>
+                  <Button variant="secondary" type="button" className="register-button" size="sm">change</Button>
+                </Link>
+              </td>
+            </tr>
+            <tr>
+              <td>email</td>
+              <td>{email}</td>
+              <td>  
+                <Link to={`/email/${username}`}>
+                  <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
+                </Link></td>
+            </tr>
+            <tr>
+              <td>birthday</td>
+              <td>{birthday && birthday.slice(0, 10)}</td>
+              <td>
+                <Link to={`/birthday/${username}`}>
+                  <Button variant="secondary" type="button" className="register-button" size="sm">change</Button>
+                </Link>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+              <Link to={`/password/${username}`}>
+          <Button variant="secondary small" type="button" className="password-button" size="sm">change password</Button>
+        </Link>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
 
-       <Form.Group controlId="formBasicEmail">
-         <Form.Label className="profile-label">Email address</Form.Label>
-         <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} />
-       </Form.Group>
-       <Form.Group controlId="exampleForm.ControlInput1">
-         <Form.Label className="profile-label">Date of Birth</Form.Label>
-         <Form.Control type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
-       </Form.Group>
-       <div className="profile-button-area">
-         <Link to={'/'}>
-           <Button variant="secondary" type="button" className="register-button">Cancel</Button>
-         </Link>
-     
-       </div>
-     </Form >
+        <Table hover variant="dark" className="table">
+          <tbody>
+            <tr>
+              <td>Favotire movies</td>
+            </tr>
+            <tr>
+              <td>{favMovies}</td>
+            </tr>
+          </tbody>
+        </Table>
+
+
+      </div>
+
     )
   }
 }
 
-/*
-export function ProfileView(props) {
-
-  const { userData, token } = props;
-
-  const [username, setUsername] = useState(username);
-  const [password, setPassword] = useState(password);
-  const [email, setEmail] = useState(email);
-  const [birthday, setBirthday] = useState(birthday);
-console.log(userData);
-
-
-  const handleUpdate = (e) => {
-    axios.put(`https://mymovies-database.herokuapp.com/users/${username}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      username: username,
-      password: password,
-      email: email,
-      birthday: birthday
-    })
-      .then(response => {
-        const data = response.data;
-        console.log(data)
-      })
-      .catch(e => {
-        console.log('profile not updated')
-      });
-
-
-
-    console.log(username, password, email, birthday);
-
-  }
-
-
-  return (
-
-
-
-    < Form className="col-6 register-form" >
-      <Form.Group controlId="formBasicUsername">
-        <Form.Label className="profile-label">Username: </Form.Label>
-        <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder={username} />
-      </Form.Group>
-      <Form.Group controlId="formBasicPassword">
-        <Form.Label className="profile-label">Password</Form.Label>
-        <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" />
-      </Form.Group>
-      <Form.Group controlId="formBasicEmail">
-        <Form.Label className="profile-label">Email address</Form.Label>
-        <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email" />
-      </Form.Group>
-      <Form.Group controlId="exampleForm.ControlInput1">
-        <Form.Label className="profile-label">Date of Birth</Form.Label>
-        <Form.Control type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
-      </Form.Group>
-      <div className="profile-button-area">
-        <Link to={'/'}>
-          <Button variant="secondary" type="button" className="register-button">Cancel</Button>
-        </Link>
-        <Button variant="secondary" type="button" className="register-button" onClick={handleUpdate}>Save</Button>
-      </div>
-    </Form >
-
-  );
-}
-*/

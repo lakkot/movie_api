@@ -1,3 +1,8 @@
+.profile-container {
+  padding-top: 40px;
+}
+
+
 .profile-form {
   margin: 120px auto;
 
@@ -22,4 +27,26 @@
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
+}
+
+
+.change-button-area {
+  text-align: right;
+}
+
+
+.password-button {
+  color: rgb(223, 219, 219);
+
+  margin-right: 10px; 
+}
+
+.tr {
+
+  border-bottom: 1px solid rgb(223, 219, 219);
+
+}
+
+.table {
+  text-align: start;
 }
