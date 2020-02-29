@@ -233,7 +233,7 @@ app.put('/email/:username', passport.authenticate('jwt', { session: false }),
 
 });
 
-pp.put('/birthday/:username', passport.authenticate('jwt', { session: false }),
+app.put('/birthday/:username', passport.authenticate('jwt', { session: false }),
 [
   //check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
   //check('username', 'Use alphanumeric characters only').isAlphanumeric(),
