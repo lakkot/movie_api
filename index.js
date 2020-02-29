@@ -178,7 +178,7 @@ app.put('/password/:username', passport.authenticate('jwt', { session: false }),
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
   }
-  //var hashedPassword = Users.hashPassword(req.body.password);
+  var hashedPassword = Users.hashPassword(req.body.password);
   Users.findOneAndUpdate({ username: req.params.username }, {
     $set:
     {
