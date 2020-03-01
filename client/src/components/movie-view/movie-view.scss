@@ -13,8 +13,6 @@ $text-color: rgb(223, 219, 219);
 .button-pane {
   width: 100%;
   margin-bottom: 20px;
-  display:flex;
-  justify-content: flex-start;
 }
 
 .view-label {
@@ -45,3 +43,16 @@ $text-color: rgb(223, 219, 219);
   padding-top: 20px;
 }
 
+.view-button {
+  margin-right: 5px;
+}
+
+.message {
+margin-right: 0;
+color: $text-color;
+width: 40%;
+height: 10px;
+padding-top: 5px;
+padding-left: 10px;
+text-align: left;
+} 

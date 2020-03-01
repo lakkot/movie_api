@@ -9,6 +9,45 @@ import './profile-view.scss'
 export function UpdateUsername(props) {
   const { user } = props;
 
+  const [username, setUsername] = useState('');
+
+
+  function showErrorMessage($input, message) {
+    // go to parent element of where the message should be displayed
+    var $container = $input.parentElement;
+    //delete the defalut browser messages - if a message shows up, delete it
+    var error = $container.querySelector('.error-message');
+    if (error) {
+      $container.removeChild(error);
+    }
+    //add your own message (error) to show if the message isn't empty
+    if (message) {
+      var error = document.createElement('div');
+      error.classList.add('error-message');
+      error.innerText = message;
+      $container.appendChild(error);
+    }
+  }
+
+  function validateUsername(e) {
+    var $userInput = document.querySelector('.login-input');
+    var value = $userInput.value;
+
+    if (!value) {
+      showErrorMessage($userInput, 'username is required');
+    }
+
+    if( /[^a-zA-Z0-9]/.test( value ) ) {
+      showErrorMessage($userInput, 'use only alphanumeric characters');
+      return false;
+    } 
+
+    handleUpdate(e);
+    showErrorMessage($userInput, 'username updated');
+    return true;
+  }
+
+
   const handleUpdate = (e) => {
     e.preventDefault();
     axios.put(`https://mymovies-database.herokuapp.com/users/${user}`, {
@@ -31,12 +70,12 @@ export function UpdateUsername(props) {
   return (
     <Form className=" col-5 login-form">
       <Form.Group controlId="formBasicEmail">
-        <Form.Label className="profile-label">Username: </Form.Label>
-        <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder={username} />
+        <Form.Label className="profile-label">New username: </Form.Label>
+        <Form.Control className="login-input" type="text" value={username} onChange={e => setUsername(e.target.value)}/>
       </Form.Group>
       <div className="change-button-area">
   
-        <Button variant="secondary" type="button" className="login-button" onClick={handleUpdate}>update</Button>
+        <Button variant="secondary" type="button" className="login-button" onClick={validateUsername}>update</Button>
 
       </div>
     </Form>

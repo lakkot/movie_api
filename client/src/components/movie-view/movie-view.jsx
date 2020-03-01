@@ -17,7 +17,6 @@ export class MovieView extends React.Component {
     super();
     this.state = {}
   }
-
   
   addToFavorites(e) {
     const {movie} = this.props;
@@ -26,11 +25,20 @@ export class MovieView extends React.Component {
     { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
     .then(res => {
-      alert(`${movie.title}  added to favorites`);
+
+      var $container = document.querySelector('.button-pane');
+      var message = document.createElement('p');
+      message.classList.add('message');
+      message.innerText = `${movie.title}  added to favorites`;
+      $container.appendChild(message);
+
+      //alert(`${movie.title}  added to favorites`);
     })
+    /*
     .then(res => {
       document.location.reload(true);
     })
+    */
     .catch(error => {
       alert(`${movie.title} not added to favorites` + error)
     });
@@ -48,9 +56,9 @@ export class MovieView extends React.Component {
         <Row>
           <Row className="button-pane">
             <Link to={'/'}>
-              <Button variant="secondary" type="button" className="back-button">go back</Button>
+              <Button variant="secondary" type="button" className="view-button">go back</Button>
             </Link>
-            <Button variant="secondary" type="button" className="back-button" onClick={(e) => this.addToFavorites(e)}>add to favorites</Button>
+            <Button variant="secondary" type="button" className="view-button" onClick={(e) => this.addToFavorites(e)}>add to favorites</Button>
           </Row>
           <Col xs={12} md={6} className="view-description">
             <Row className="movie-title">

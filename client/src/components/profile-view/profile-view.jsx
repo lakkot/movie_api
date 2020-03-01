@@ -141,15 +141,18 @@ export class ProfileView extends React.Component {
           </tbody>
         </Table>
 
-        <Table hover variant="dark" className="table">
+        <Table hover variant="dark" className="table col-6">
           <tbody>
             <tr>
               <td>Favorite movies</td>
+              <td></td>
             </tr>
-            <tr>
-              <td>
-                {favMovies.map(itemFromList => (<li key={itemFromList}><span>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </span><Button className="del-fav"variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></li>))}</td>
-            </tr>
+                {favMovies.map(itemFromList => (
+                <tr key={itemFromList}>
+                  <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
+                  <td><Button className="del-fav"variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
+                </tr>)
+                )}
           </tbody>
         </Table>
         <div className="bottom">

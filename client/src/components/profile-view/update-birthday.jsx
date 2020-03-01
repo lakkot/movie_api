@@ -30,7 +30,7 @@ export function UpdateBirthday (props) {
   return (
     <Form className=" col-5 login-form">
       <Form.Group controlId="exampleForm.ControlInput1">
-        <Form.Label className="profile-label">Date of Birth</Form.Label>
+        <Form.Label className="profile-label">Update date of birth</Form.Label>
         <Form.Control type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
       </Form.Group>
       <div className="change-button-area">

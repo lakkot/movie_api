@@ -4,15 +4,12 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 
+
+
+
 export function UpdateEmail (props) {
   const { user } = props;
-
-  //const [username, setUsername] = useState('');
-  //const [password, updatePassword] = useState('');
   const [email, setEmail] = useState('');
-  //const [birthday, updateBirthday] = useState('');
-
-  //    props.onLoggedIn(username);
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -32,34 +29,52 @@ export function UpdateEmail (props) {
 
   }
 
+  function showErrorMessage($input, message) {
+    // go to parent element of where the message should be displayed
+    var $container = $input.parentElement;
+    //delete the defalut browser messages - if a message shows up, delete it
+    var error = $container.querySelector('.error-message');
+    if (error) {
+      $container.removeChild(error);
+    }
+    //add your own message (error) to show if the message isn't empty
+    if (message) {
+      var error = document.createElement('div');
+      error.classList.add('error-message');
+      error.innerText = message;
+      $container.appendChild(error);
+    }
+  }
 
 
+function validateEmail(e) {
+  var $emailInput = document.querySelector('.email-input');
+  var value = $emailInput.value;
+
+  if (!value) {
+    showErrorMessage($emailInput, 'e-mail is required');
+    return false;
+  }
+  if (value.indexOf('@') === -1 && value.indexOf('.') === -1) {
+    showErrorMessage($emailInput, 'enter a valid e-mail address');
+    return false;
+  }
+  handleUpdate(e);
+  showErrorMessage($emailInput, 'email updated');
+    return true;
+}
 
   return (
     <Form className=" col-5 login-form">
       <Form.Group controlId="formBasicEmail">
-        <Form.Label className="profile-label">Email address</Form.Label>
-        <Form.Control type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email" />
+        <Form.Label className="profile-label">Change email address</Form.Label>
+        <Form.Control type="email" value={email} className="email-input" onChange={e => setEmail(e.target.value)} placeholder="email" />
       </Form.Group>
       <div className="change-button-area">
   
-        <Button variant="secondary" type="button" className="login-button" onClick={handleUpdate}>update</Button>
+        <Button variant="secondary" type="button" className="login-button" onClick={validateEmail}>update</Button>
 
       </div>
     </Form>
   );
 }
-
-
-
-/*
-      <div className="button-area">
-        <Button variant="secondary" type="button" className="register-button" value={register} onClick={() => props.onClick()}> Register</Button>
-        <Button variant="secondary" type="button" className="login-button" onClick={handleSubmit}>Login</Button>
-      </div>
-
-      password: password,
-      birthday: birthday,
-      email: email
-
-      */
