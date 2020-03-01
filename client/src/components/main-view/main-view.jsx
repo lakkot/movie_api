@@ -91,6 +91,8 @@ export class MainView extends React.Component {
         this.setState({
           movies: response.data
         });
+        localStorage.setItem('movies', JSON.stringify(response.data));
+
       })
       .catch(function (error) {
         console.log(error);
@@ -150,6 +152,9 @@ export class MainView extends React.Component {
       <Router>
         <div className="container">
           <div className="main-button-area">
+          <Link to={'/'}>
+              <Button variant="secondary" type="button" className="main-button">home</Button>
+            </Link>
             <Link to={`/users/${user}`}>
               <Button variant="secondary" type="button" className="main-button">user profile</Button>
             </Link>
