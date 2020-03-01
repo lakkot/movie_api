@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Table from 'react-bootstrap/Table'
-import { format } from "date-fns";
-import './profile-view.scss'
 
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table'
+
+import './profile-view.scss'
 
 import { Link } from "react-router-dom";
 
@@ -36,6 +34,8 @@ export class ProfileView extends React.Component {
   }
 
 
+
+
   getUser(token) {
     let username = localStorage.getItem('user');
     axios.get(`https://mymovies-database.herokuapp.com/users/${username}`, {
@@ -59,12 +59,10 @@ export class ProfileView extends React.Component {
 
 
   deleteProfile() {
+    let username = localStorage.getItem('user');
     axios.delete(`https://mymovies-database.herokuapp.com/users/${username}`,
       {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-      .then(res => {
-        alert('Do you really want to delete your account?')
       })
       .then(res => {
         alert('Account was successfully deleted')
@@ -72,12 +70,11 @@ export class ProfileView extends React.Component {
       .then(res => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-
         this.setState({
           user: null
-
         });
         window.open('/', '_self');
+
       })
       .catch(e => {
         alert('Account could not be deleted ' + e)
@@ -85,9 +82,22 @@ export class ProfileView extends React.Component {
   }
 
 
+  deleteFromFavs(event, itemFromList) {
+    event.preventDefault();
+    console.log(itemFromList);
+    axios.delete(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${itemFromList}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+      .then(response => {
+        this.getUser(localStorage.getItem('token'));
+      })
+      .catch(event => {
+        alert('Oops... something went wrong...');
+      });
+  }
+
   render() {
     const { username, email, birthday, favMovies } = this.state;
-    console.log(favMovies);
     return (
 
       <div className="col-8 mx-auto profile-container"> 
@@ -115,17 +125,17 @@ export class ProfileView extends React.Component {
               <td>{birthday && birthday.slice(0, 10)}</td>
               <td>
                 <Link to={`/birthday/${username}`}>
-                  <Button variant="secondary" type="button" className="register-button" size="sm">change</Button>
+                  <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
                 </Link>
               </td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
+              <td>password</td>
+              <td>********</td>
               <td>
-              <Link to={`/password/${username}`}>
-          <Button variant="secondary small" type="button" className="password-button" size="sm">change password</Button>
-        </Link>
+                <Link to={`/password/${username}`}>
+                  <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
+               </Link>
               </td>
             </tr>
           </tbody>
@@ -134,16 +144,21 @@ export class ProfileView extends React.Component {
         <Table hover variant="dark" className="table">
           <tbody>
             <tr>
-              <td>Favotire movies</td>
+              <td>Favorite movies</td>
             </tr>
             <tr>
-              <td>{favMovies}</td>
+              <td>
+                {favMovies.map(itemFromList => (<li key={itemFromList}><span>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </span><Button className="del-fav"variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></li>))}</td>
             </tr>
           </tbody>
         </Table>
-
-
+        <div className="bottom">
+          <Button variant="primary large" type="button" className="password-button" size="sm" onClick={() => this.deleteProfile()}>DELETE ACCOUNT</Button>
+        </div>
       </div>
+
+
+
 
     )
   }
