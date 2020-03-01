@@ -311,13 +311,13 @@ app.get('/users/:username', passport.authenticate('jwt', { session: false }), (r
 });
 
 //allow users do deregister
-app.delete('/users/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndRemove({ _id: req.params.id })
+app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOneAndRemove({ username: req.params.username })
     .then(function (user) {
       if (!user) {
-        res.status(400).send('User ID ' + req.params.id + " was not found");
+        res.status(400).send('User ' + req.params.username + " was not found");
       } else {
-        res.status(200).send('User ID ' + req.params.id + " was deleted.");
+        res.status(200).send('User ' + req.params.username + " was deleted.");
       }
     })
     .catch(function (err) {
