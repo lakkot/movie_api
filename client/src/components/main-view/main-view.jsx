@@ -2,13 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
+import { connect } from 'react-redux';
 
 
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
+import MoviesList from '../movies-list/movies-list';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
@@ -19,9 +20,10 @@ import { ProfileView } from '../profile-view/profile-view';
 import { UpdateUsername } from '../profile-view/update-username';
 import { UpdatePassword } from '../profile-view/update-password';
 import { UpdateEmail } from '../profile-view/update-email';
-import { UpdateBirthday} from '../profile-view/update-birthday';
+import { UpdateBirthday } from '../profile-view/update-birthday';
 
-
+// #0
+import { setMovies } from '../../actions/actions';
 
 
 
@@ -55,7 +57,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem('user')
       });
       this.getMovies(accessToken);
-      this.getUser(accessToken);
+      //this.getUser(accessToken);
     }
   }
 
@@ -87,17 +89,14 @@ export class MainView extends React.Component {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        // Assign the result to the state
-        this.setState({
-          movies: response.data
-        });
-        localStorage.setItem('movies', JSON.stringify(response.data));
-
+        // #1
+        this.props.setMovies(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
   }
+
 
   getUser(token) {
     let username = localStorage.getItem('user');
@@ -138,7 +137,9 @@ export class MainView extends React.Component {
   render() {
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
-    const { movies, user, register } = this.state;
+    let { movies } = this.props;
+
+    const { user, register } = this.state;
 
     if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />
 
@@ -152,7 +153,7 @@ export class MainView extends React.Component {
       <Router>
         <div className="container">
           <div className="main-button-area">
-          <Link to={'/'}>
+            <Link to={'/'}>
               <Button variant="secondary" type="button" className="main-button">home</Button>
             </Link>
             <Link to={`/users/${user}`}>
@@ -163,16 +164,15 @@ export class MainView extends React.Component {
           </div>
           <div className="main-view row mx-auto movies-list">
             <Route exact path="/" render={() => {
-              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} onClick={() => this.isRegistered()} />;
-              return movies.map(m => <MovieCard key={m._id} movie={m} />)
-            }
-            } />
+              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+              return <MoviesList movies={movies} />;
+            }} />
             <Route path="/register" render={() => <RegistrationView />} />
-            <Route path="/users/:username" render={() => <ProfileView  />} />
-            <Route path="/update/:username" render={() => <UpdateUsername user={user}/>} />
-            <Route path="/password/:username" render={() => <UpdatePassword user={user}/>} />
-            <Route path="/email/:username" render={() => <UpdateEmail user={user}/>} />
-            <Route path="/birthday/:username" render={() => <UpdateBirthday user={user}/>} />
+            <Route path="/users/:username" render={() => <ProfileView />} />
+            <Route path="/update/:username" render={() => <UpdateUsername user={user} />} />
+            <Route path="/password/:username" render={() => <UpdatePassword user={user} />} />
+            <Route path="/email/:username" render={() => <UpdateEmail user={user} />} />
+            <Route path="/birthday/:username" render={() => <UpdateBirthday user={user} />} />
 
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} />} />
             <Route path="/genres/:name" render={({ match }) => {
@@ -192,4 +192,13 @@ export class MainView extends React.Component {
     );
   }
 }
+
+// #3
+let mapStateToProps = state => {
+  return { movies: state.movies }
+}
+
+// #4
+export default connect(mapStateToProps, { setMovies })(MainView);
+
 
