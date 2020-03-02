@@ -23,7 +23,8 @@ import { UpdateEmail } from '../profile-view/update-email';
 import { UpdateBirthday } from '../profile-view/update-birthday';
 
 // #0
-import { setMovies } from '../../actions/actions';
+import { setMovies, setUserData } from '../../actions/actions';
+
 
 
 
@@ -57,7 +58,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem('user')
       });
       this.getMovies(accessToken);
-      //this.getUser(accessToken);
+      this.getUser(accessToken);
     }
   }
 
@@ -75,7 +76,7 @@ export class MainView extends React.Component {
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.username);
     this.getMovies(authData.token);
-    //this.getUser(authData.token);
+    this.getUser(authData.token);
     console.log(authData.user);
 
   }
@@ -100,23 +101,19 @@ export class MainView extends React.Component {
 
   getUser(token) {
     let username = localStorage.getItem('user');
+    console.log(username);
     axios.get(`https://mymovies-database.herokuapp.com/users/${username}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-        this.setState({
-          userData: response.data,
-          username: response.data.username,
-          password: response.data.password,
-          email: response.data.email,
-          birthday: response.data.birthday,
-          favMovies: response.data.favMovies
-        });
+        // #1
+        this.props.setUserData(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
   }
+
 
   logout = () => {
     localStorage.removeItem('token');
@@ -137,9 +134,11 @@ export class MainView extends React.Component {
   render() {
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
-    let { movies } = this.props;
-
+    let { movies, userData } = this.props;
     const { user, register } = this.state;
+    console.log(movies);
+    console.log(userData);
+
 
     if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />
 
@@ -168,7 +167,7 @@ export class MainView extends React.Component {
               return <MoviesList movies={movies} />;
             }} />
             <Route path="/register" render={() => <RegistrationView />} />
-            <Route path="/users/:username" render={() => <ProfileView />} />
+            <Route path="/users/:username" render={() => <ProfileView userData={userData} />} />
             <Route path="/update/:username" render={() => <UpdateUsername user={user} />} />
             <Route path="/password/:username" render={() => <UpdatePassword user={user} />} />
             <Route path="/email/:username" render={() => <UpdateEmail user={user} />} />
@@ -195,10 +194,11 @@ export class MainView extends React.Component {
 
 // #3
 let mapStateToProps = state => {
-  return { movies: state.movies }
+  return { movies: state.movies, userData: state.userData };
+
 }
 
 // #4
-export default connect(mapStateToProps, { setMovies })(MainView);
+export default connect(mapStateToProps, { setMovies, setUserData })(MainView);
 
 

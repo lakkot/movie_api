@@ -15,10 +15,6 @@ export class ProfileView extends React.Component {
     super();
     this.state = {
       username: null,
-      password: null,
-      email: null,
-      birthday: null,
-      userData: null,
       favMovies: []
     };
   }
@@ -50,7 +46,7 @@ export class ProfileView extends React.Component {
           birthday: response.data.birthday,
           favMovies: response.data.favMovies
         });
-       
+
       })
       .catch(function (error) {
         console.log(error);
@@ -97,34 +93,37 @@ export class ProfileView extends React.Component {
   }
 
   render() {
-    const { username, email, birthday, favMovies } = this.state;
+    const { userData } = this.props;
+    const { favMovies } = this.state;
+    console.log(userData.favMovies);
+
     return (
 
-      <div className="col-8 mx-auto profile-container"> 
+      <div className="col-8 mx-auto profile-container">
         <Table hover variant="dark" className="table">
           <tbody>
             <tr>
               <td>username</td>
-              <td>{username}</td>
+              <td>{userData.username}</td>
               <td>
-                <Link to={`/update/${username}`}>
+                <Link to={`/update/${userData.username}`}>
                   <Button variant="secondary" type="button" className="register-button" size="sm">change</Button>
                 </Link>
               </td>
             </tr>
             <tr>
               <td>email</td>
-              <td>{email}</td>
-              <td>  
-                <Link to={`/email/${username}`}>
+              <td>{userData.email}</td>
+              <td>
+                <Link to={`/email/${userData.username}`}>
                   <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
                 </Link></td>
             </tr>
             <tr>
               <td>birthday</td>
-              <td>{birthday && birthday.slice(0, 10)}</td>
+              <td>{userData.birthday && userData.birthday.slice(0, 10)}</td>
               <td>
-                <Link to={`/birthday/${username}`}>
+                <Link to={`/birthday/${userData.username}`}>
                   <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
                 </Link>
               </td>
@@ -133,9 +132,9 @@ export class ProfileView extends React.Component {
               <td>password</td>
               <td>********</td>
               <td>
-                <Link to={`/password/${username}`}>
+                <Link to={`/password/${userData.username}`}>
                   <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
-               </Link>
+                </Link>
               </td>
             </tr>
           </tbody>
@@ -147,12 +146,12 @@ export class ProfileView extends React.Component {
               <td>Favorite movies</td>
               <td></td>
             </tr>
-                {favMovies.map(itemFromList => (
-                <tr key={itemFromList}>
-                  <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
-                  <td><Button className="del-fav"variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
-                </tr>)
-                )}
+            {favMovies.map(itemFromList => (
+              <tr key={itemFromList}>
+                <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
+                <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
+              </tr>)
+            )}
           </tbody>
         </Table>
         <div className="bottom">
