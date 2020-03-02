@@ -14,45 +14,15 @@ export class ProfileView extends React.Component {
   constructor() {
     super();
     this.state = {
-      username: null,
-      favMovies: []
     };
   }
-
 
   componentDidMount() {
     //authentication
     let accessToken = localStorage.getItem('token');
-    if (accessToken !== null) {
-      this.getUser(accessToken);
-    }
+    if (accessToken !== null);
 
   }
-
-
-
-
-  getUser(token) {
-    let username = localStorage.getItem('user');
-    axios.get(`https://mymovies-database.herokuapp.com/users/${username}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        this.setState({
-          userData: response.data,
-          username: response.data.username,
-          password: response.data.password,
-          email: response.data.email,
-          birthday: response.data.birthday,
-          favMovies: response.data.favMovies
-        });
-
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
 
   deleteProfile() {
     let username = localStorage.getItem('user');
@@ -77,7 +47,6 @@ export class ProfileView extends React.Component {
       });
   }
 
-
   deleteFromFavs(event, itemFromList) {
     event.preventDefault();
     console.log(itemFromList);
@@ -93,9 +62,8 @@ export class ProfileView extends React.Component {
   }
 
   render() {
-    const { userData } = this.props;
-    const { favMovies } = this.state;
-    console.log(userData.favMovies);
+    const { userData   } = this.props;
+    const favMovies = this.props.userData.favMovies;
 
     return (
 
@@ -165,4 +133,3 @@ export class ProfileView extends React.Component {
     )
   }
 }
-
