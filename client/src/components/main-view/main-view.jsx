@@ -142,8 +142,6 @@ export class MainView extends React.Component {
 
     if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />
 
-    //if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} onClick={() => this.isRegistered()} />
-
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
@@ -167,7 +165,7 @@ export class MainView extends React.Component {
               return <MoviesList movies={movies} />;
             }} />
             <Route path="/register" render={() => <RegistrationView />} />
-            <Route path="/users/:username" render={() => <ProfileView userData={userData} />} />
+            <Route path="/users/:username" render={() => <ProfileView userData={userData} favMovies={userData.favMovies} />} />
             <Route path="/update/:username" render={() => <UpdateUsername user={user} />} />
             <Route path="/password/:username" render={() => <UpdatePassword user={user} />} />
             <Route path="/email/:username" render={() => <UpdateEmail user={user} />} />
