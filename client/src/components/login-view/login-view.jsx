@@ -4,18 +4,20 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './login-view.scss';
 
+import { Link } from "react-router-dom";
+
 
 export function LoginView(props) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { register, setRegister } = useState('');
+  const { register } = useState('');
   //    props.onLoggedIn(username);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     /* Send a request to the server for authentication */
-    axios.post(/*'http://127.0.0.1:8080/login'*/'https://mymovies-database.herokuapp.com/login', {
+    axios.post('https://mymovies-database.herokuapp.com/login', {
       username: username,
       password: password
     })
@@ -39,7 +41,9 @@ export function LoginView(props) {
         <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="password" />
       </Form.Group>
       <div className="button-area">
-        <Button variant="secondary" type="button" className="register-button" value={register} onClick={() => props.onClick()}> Register</Button>
+        <Link to={'/register'}>
+          <Button variant="secondary" type="button" className="register-button" value={register}>Register</Button>
+        </Link>
         <Button variant="secondary" type="button" className="login-button" onClick={handleSubmit}>Login</Button>
       </div>
     </Form>
