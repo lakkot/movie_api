@@ -17,32 +17,33 @@ export class MovieView extends React.Component {
     super();
     this.state = {}
   }
-  
+
   addToFavorites(e) {
-    const {movie} = this.props;
+    const { movie } = this.props;
     e.preventDefault();
-    axios.post(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`,  {username: localStorage.getItem('user') }, 
-    { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
-    .then(res => {
+    axios.post(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`, { username: localStorage.getItem('user') },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
+      .then(res => {
 
-      var $container = document.querySelector('.button-pane');
-      var message = document.createElement('p');
-      message.classList.add('message');
-      message.innerText = `${movie.title}  added to favorites`;
-      $container.appendChild(message);
+        var $container = document.querySelector('.button-pane');
+        var message = document.createElement('p');
+        message.classList.add('message');
+        message.innerText = `${movie.title}  added to favorites`;
+        $container.appendChild(message);
 
-      //alert(`${movie.title}  added to favorites`);
-    })
-    /*
-    .then(res => {
-      document.location.reload(true);
-    })
-    */
-    .catch(error => {
-      alert(`${movie.title} not added to favorites` + error)
-    });
-  } 
+        //alert(`${movie.title}  added to favorites`);
+      })
+      /*
+      .then(res => {
+        document.location.reload(true);
+      })
+      */
+      .catch(error => {
+        alert(`${movie.title} not added to favorites` + error)
+      });
+  }
 
   render() {
     const { movie } = this.props;
