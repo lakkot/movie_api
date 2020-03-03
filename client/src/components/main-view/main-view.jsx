@@ -82,8 +82,6 @@ export class MainView extends React.Component {
     localStorage.setItem('user', authData.user.username);
     this.getMovies(authData.token);
     this.getUser(authData.token);
-    console.log(authData.user);
-
   }
 
 
@@ -150,38 +148,32 @@ export class MainView extends React.Component {
     if (!movies) return <div className="main-view" />;
 
     return (
+
       <Router>
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">My Movies App</Navbar.Brand>
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="navbar">
+          <Navbar.Brand>My Movies App</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link>
-                <Link to={'/'}>
-                  <Button variant="dark" type="button" className="main-button">home</Button>
-                </Link>
+              <Nav.Link href='/'>
+                <Button variant="dark" type="button" className="main-button">home</Button>
               </Nav.Link>
-              <Nav.Link href="#pricing">
-                <Link to={`/users/${user}`}>
-                  <Button variant="dark" type="button" className="main-button">user profile</Button>
-                </Link>
+              <Nav.Link href={'/users/' + userData.username}>
+                <Button variant="dark" type="button" className="main-button">user profile</Button>
               </Nav.Link>
             </Nav>
             <Nav>
               <Nav.Link>
                 <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log in</Button>
-                <Link to={'/login'}>
-                  <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
-                </Link>
+              </Nav.Link>
+              <Nav.Link href="/login">
+                <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
+
         <div className="container">
-          <div className="main-button-area">
-
-
-          </div>
           <div className="main-view row mx-auto movies-list">
             <Route exact path="/" render={() => {
               if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
@@ -209,7 +201,7 @@ export class MainView extends React.Component {
             } />
           </div>
         </div>
-      </Router>
+      </Router >
 
     );
   }
@@ -225,3 +217,34 @@ let mapStateToProps = state => {
 export default connect(mapStateToProps, { setMovies, setUserData })(MainView);
 
 
+
+/*
+
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <Navbar.Brand href="#home">My Movies App</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link>
+                <Link to={'/'}>
+                  <Button variant="dark" type="button" className="main-button">home</Button>
+                </Link>
+              </Nav.Link>
+              <Nav.Link href="#pricing">
+                <Link to={`/users/${user}`}>
+                  <Button variant="dark" type="button" className="main-button">user profile</Button>
+                </Link>
+              </Nav.Link>
+            </Nav>
+            <Nav>
+              <Nav.Link>
+                <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log in</Button>
+                <Link to={'/login'}>
+                  <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
+                </Link>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+                  </Navbar>
+
+*/
