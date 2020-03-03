@@ -19,9 +19,14 @@ export class MovieView extends React.Component {
   }
 
 
-  toggleFavorites() {
-    const favMovies = this.props.favMovies;
-    console.log(favMovies);
+  toggleFavorites(match) {
+    console.log(this.props.favMovies);
+    if (this.props.favMovies.find(m => m._id === match.params.movieId)) { //get movie ID from props and it should work
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
 
@@ -68,7 +73,6 @@ export class MovieView extends React.Component {
 
   render() {
     const { movie } = this.props;
-
     if (!movie) return null;
 
 
