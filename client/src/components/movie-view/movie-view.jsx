@@ -20,7 +20,7 @@ export class MovieView extends React.Component {
 
 
   toggleFavorites() {
-    const favMovies = this.state.userData.favMovies;
+    const favMovies = this.props.favMovies;
     console.log(favMovies);
   }
 
