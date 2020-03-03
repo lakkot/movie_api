@@ -18,6 +18,27 @@ export class MovieView extends React.Component {
     this.state = {}
   }
 
+
+  toggleFavorites() {
+    const favMovies = this.state.userData.favMovies;
+    console.log(favMovies);
+  }
+
+
+  deleteFromFavs(event, itemFromList) {
+    event.preventDefault();
+    console.log(itemFromList);
+    axios.delete(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${itemFromList}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+      .then(response => {
+        this.getUser(localStorage.getItem('token'));
+      })
+      .catch(event => {
+        alert('Oops... something went wrong...');
+      });
+  }
+
   addToFavorites(e) {
     const { movie } = this.props;
     e.preventDefault();
@@ -59,7 +80,7 @@ export class MovieView extends React.Component {
             <Link to={'/'}>
               <Button variant="secondary" type="button" className="view-button">go back</Button>
             </Link>
-            <Button variant="secondary" type="button" className="view-button" onClick={(e) => this.addToFavorites(e)}>add to favorites</Button>
+            <Button variant="secondary" type="button" className="view-button" onClick={() => this.toggleFavorites()}>add to favorites</Button>
           </Row>
           <Col xs={12} md={6} className="view-description">
             <Row className="movie-title">
