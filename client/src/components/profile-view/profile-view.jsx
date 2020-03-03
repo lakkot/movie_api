@@ -17,6 +17,8 @@ export class ProfileView extends React.Component {
     };
   }
 
+
+
   componentDidMount() {
     //authentication
     let accessToken = localStorage.getItem('token');
@@ -61,9 +63,20 @@ export class ProfileView extends React.Component {
       });
   }
 
+
+
   render() {
     const { userData } = this.props;
     const favMovies = this.props.userData.favMovies;
+
+    if (favMovies) {
+      var favMoviesList = favMovies.map(itemFromList => (
+        <tr key={itemFromList}>
+          <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
+          <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
+        </tr>)
+      )
+    }
 
     return (
 
@@ -114,18 +127,14 @@ export class ProfileView extends React.Component {
               <td>Favorite movies</td>
               <td></td>
             </tr>
-            {favMovies.map(itemFromList => (
-              <tr key={itemFromList}>
-                <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
-                <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
-              </tr>)
-            )}
+            {favMoviesList}
           </tbody>
         </Table>
         <div className="bottom">
           <Button variant="primary large" type="button" className="password-button" size="sm" onClick={() => this.deleteProfile()}>DELETE ACCOUNT</Button>
         </div>
       </div>
+
 
 
 
