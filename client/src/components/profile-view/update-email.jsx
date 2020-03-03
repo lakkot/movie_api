@@ -7,7 +7,7 @@ import axios from 'axios';
 
 
 
-export function UpdateEmail (props) {
+export function UpdateEmail(props) {
   const { user } = props;
   const [email, setEmail] = useState('');
 
@@ -47,31 +47,31 @@ export function UpdateEmail (props) {
   }
 
 
-function validateEmail(e) {
-  var $emailInput = document.querySelector('.email-input');
-  var value = $emailInput.value;
+  function validateEmail(e) {
+    var $emailInput = document.querySelector('.email-input');
+    var value = $emailInput.value;
 
-  if (!value) {
-    showErrorMessage($emailInput, 'e-mail is required');
-    return false;
-  }
-  if (value.indexOf('@') === -1 && value.indexOf('.') === -1) {
-    showErrorMessage($emailInput, 'enter a valid e-mail address');
-    return false;
-  }
-  handleUpdate(e);
-  showErrorMessage($emailInput, 'email updated');
+    if (!value) {
+      showErrorMessage($emailInput, 'e-mail is required');
+      return false;
+    }
+    if (value.indexOf('@') === -1 && value.indexOf('.') === -1) {
+      showErrorMessage($emailInput, 'enter a valid e-mail address');
+      return false;
+    }
+    handleUpdate(e);
+    showErrorMessage($emailInput, 'email updated');
     return true;
-}
+  }
 
   return (
     <Form className=" col-5 login-form">
       <Form.Group controlId="formBasicEmail">
         <Form.Label className="profile-label">Change email address</Form.Label>
-        <Form.Control type="email" value={email} className="email-input" onChange={e => setEmail(e.target.value)} placeholder="email" />
+        <Form.Control type="email" value={email} className="email-input form-control" onChange={e => setEmail(e.target.value)} placeholder="email" required />
       </Form.Group>
       <div className="change-button-area">
-  
+
         <Button variant="secondary" type="button" className="login-button" onClick={validateEmail}>update</Button>
 
       </div>

@@ -11,7 +11,6 @@ import { setSortFilter } from '../../actions/actions';
 
 function SortFilterDropdown(props) {
   const { setSortFilter } = props;
-  console.log(setSortFilter);
   let dropdownTitle = 'Sort by';
 
   return (

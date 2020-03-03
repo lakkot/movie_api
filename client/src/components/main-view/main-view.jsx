@@ -1,6 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
+
 
 import { connect } from 'react-redux';
 
@@ -146,15 +151,35 @@ export class MainView extends React.Component {
 
     return (
       <Router>
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <Navbar.Brand href="#home">My Movies App</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link>
+                <Link to={'/'}>
+                  <Button variant="dark" type="button" className="main-button">home</Button>
+                </Link>
+              </Nav.Link>
+              <Nav.Link href="#pricing">
+                <Link to={`/users/${user}`}>
+                  <Button variant="dark" type="button" className="main-button">user profile</Button>
+                </Link>
+              </Nav.Link>
+            </Nav>
+            <Nav>
+              <Nav.Link>
+                <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log in</Button>
+                <Link to={'/login'}>
+                  <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
+                </Link>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
         <div className="container">
           <div className="main-button-area">
-            <Link to={'/'}>
-              <Button variant="secondary" type="button" className="main-button">home</Button>
-            </Link>
-            <Link to={`/users/${user}`}>
-              <Button variant="secondary" type="button" className="main-button">user profile</Button>
-            </Link>
-            <Button variant="secondary" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
+
 
           </div>
           <div className="main-view row mx-auto movies-list">
@@ -163,6 +188,8 @@ export class MainView extends React.Component {
               return <MoviesList movies={movies} />;
             }} />
             <Route path="/register" render={() => <RegistrationView />} />
+            <Route path="/login" render={() => <LoginView onLoggedIn={user => this.onLoggedIn(user)} />} />
+
             <Route path="/users/:username" render={() => <ProfileView userData={userData} favMovies={userData.favMovies} />} />
             <Route path="/update/:username" render={() => <UpdateUsername user={user} />} />
             <Route path="/password/:username" render={() => <UpdatePassword user={user} />} />

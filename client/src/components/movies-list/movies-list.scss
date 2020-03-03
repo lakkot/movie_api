@@ -8,6 +8,16 @@
 }
 
 .movies-list {
-  text-align: center;
+  width: 100%;
+
+}
+
+.spinner {
+  position: absolute;
+  top: 300px;
+  left: 0;
+  //text-align: center;
+  z-index: -1;
+  width: 100%;
 
 }
