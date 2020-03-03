@@ -2,6 +2,8 @@
 
 export const SET_MOVIES = 'SET_MOVIES';
 export const SET_FILTER = 'SET_FILTER';
+export const SET_SORT_FILTER = 'SET_SORT_FILTER';
+
 export const SET_USERDATA = 'SET_USERDATA';
 
 export function setMovies(value) {
@@ -10,6 +12,10 @@ export function setMovies(value) {
 
 export function setFilter(value) {
   return { type: SET_FILTER, value };
+}
+
+export function setSortFilter(value) {
+  return { type: SET_SORT_FILTER, value };
 }
 
 export function setUserData(value) {

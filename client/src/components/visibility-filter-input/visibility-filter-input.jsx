@@ -11,11 +11,8 @@ function VisibilityFilterInput(props) {
   return <Form.Control
     onChange={e => props.setFilter(e.target.value)}
     value={props.visibilityFilter}
-    placeholder="filter"
+    placeholder="search"
   />;
 }
 
-export default connect(
-  null,
-  { setFilter }
-)(VisibilityFilterInput);
+export default connect(null, { setFilter })(VisibilityFilterInput);

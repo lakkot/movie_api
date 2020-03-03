@@ -101,7 +101,6 @@ export class MainView extends React.Component {
 
   getUser(token) {
     let username = localStorage.getItem('user');
-    console.log(username);
     axios.get(`https://mymovies-database.herokuapp.com/users/${username}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -136,8 +135,7 @@ export class MainView extends React.Component {
     // before the data is initially loaded
     let { movies, userData } = this.props;
     const { user, register } = this.state;
-    console.log(movies);
-    console.log(userData);
+
 
 
     if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />

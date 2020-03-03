@@ -62,7 +62,7 @@ export class ProfileView extends React.Component {
   }
 
   render() {
-    const { userData   } = this.props;
+    const { userData } = this.props;
     const favMovies = this.props.userData.favMovies;
 
     return (
