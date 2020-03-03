@@ -15,35 +15,27 @@ import './movie-view.scss'
 export class MovieView extends React.Component {
   constructor() {
     super();
-    this.state = {}
-  }
-
-
-  toggleFavorites() {
-    console.log(this.props.movie._id);
-    console.log(this.props.favMovies);
-    if (this.props.favMovies.find(m => m === this.props.movie._id)) { //get movie ID from props and it should work
-      console.log('true');
-    } else {
-      console.log('false');
-
-    }
 
   }
 
 
-  deleteFromFavs(event, itemFromList) {
-    event.preventDefault();
-    console.log(itemFromList);
-    axios.delete(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${itemFromList}`, {
+  deleteFromFavs(e) {
+    const { movie } = this.props;
+    console.log(movie._id)
+    e.preventDefault();
+    axios.delete(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
       .then(response => {
-        this.getUser(localStorage.getItem('token'));
+        document.location.reload(true);
+
       })
+      
       .catch(event => {
         alert('Oops... something went wrong...');
-      });
+      })
+      
+      ;
   }
 
   addToFavorites(e) {
@@ -53,6 +45,7 @@ export class MovieView extends React.Component {
       {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
+      /*
       .then(res => {
 
         var $container = document.querySelector('.button-pane');
@@ -63,21 +56,48 @@ export class MovieView extends React.Component {
 
         //alert(`${movie.title}  added to favorites`);
       })
-      /*
+      */
       .then(res => {
         document.location.reload(true);
+        this.setState
       })
-      */
+      
       .catch(error => {
         alert(`${movie.title} not added to favorites` + error)
       });
   }
 
+
+
+  toggleFavorites(e) {
+    if (this.props.favMovies.find(m => m === this.props.movie._id)) { //get movie ID from props and it should work
+      this.deleteFromFavs(e);
+    } else {
+      this.addToFavorites(e);
+
+    }
+  }
+
+  changeButton() {
+    const { movie, favMovies } = this.props;
+    if (favMovies) {
+      if (favMovies.find(m => m === movie._id)) {
+        return 'remove from favorites';
+      } else {
+        return 'add to favorites';
+      }
+    }
+
+   }
+
+ 
+
   render() {
-    const { movie } = this.props;
+    const { movie, favMovies } = this.props;
     if (!movie) return null;
 
-
+    const button = this.changeButton();
+    
     return (
 
       <Container className="view-container">
@@ -86,7 +106,7 @@ export class MovieView extends React.Component {
             <Link to={'/'}>
               <Button variant="secondary" type="button" className="view-button">go back</Button>
             </Link>
-            <Button variant="secondary" type="button" className="view-button" onClick={() => this.toggleFavorites()}>add to favorites</Button>
+            <Button variant="secondary" type="button" className="view-button" onClick={(e) => this.toggleFavorites(e)}>{button}</Button>
           </Row>
           <Col xs={12} md={6} className="view-description">
             <Row className="movie-title">
