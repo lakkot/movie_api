@@ -19,12 +19,14 @@ export class MovieView extends React.Component {
   }
 
 
-  toggleFavorites(match) {
+  toggleFavorites() {
+    console.log(this.props.movie._id);
     console.log(this.props.favMovies);
-    if (this.props.favMovies.find(m => m._id === match.params.movieId)) { //get movie ID from props and it should work
-      return true;
+    if (this.props.favMovies.find(m => m === this.props.movie._id)) { //get movie ID from props and it should work
+      console.log('true');
     } else {
-      return false;
+      console.log('false');
+
     }
 
   }
