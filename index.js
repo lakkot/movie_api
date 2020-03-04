@@ -66,7 +66,8 @@ app.use(function (err, req, res, next) {
 
 //show this if nothing after / is given in website adress request
 app.get('/', function (req, res) {
-  res.send('You wanted a list of movies but it is me, the message!!')
+  //res.send('You wanted a list of movies but it is me, the message!!');
+  res.redirect('/client');
 });
 
 //show this if /movies site is requested (i.e. pull the table)
