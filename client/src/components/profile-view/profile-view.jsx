@@ -132,7 +132,7 @@ export class ProfileView extends React.Component {
     )
   }
 }
-/*
+
 ProfileView.propTypes = {
   movies: PropTypes.arrayOf(
     PropTypes.shape({
@@ -149,4 +149,3 @@ ProfileView.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
-*/

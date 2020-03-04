@@ -188,7 +188,7 @@ let mapStateToProps = state => {
 // redux
 export default connect(mapStateToProps, { setMovies, setUserData })(MainView);
 
-/*
+
 MainView.propTypes = {
 
   movies: PropTypes.arrayOf(
@@ -209,26 +209,26 @@ MainView.propTypes = {
     })
   ),
 
-    userData: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-        birthday: PropTypes.string,
-        favMovies: PropTypes.array
-      })
-    ),
-
-    userData: PropTypes.shape({
+  userData: PropTypes.arrayOf(
+    PropTypes.shape({
       _id: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired,
       birthday: PropTypes.string,
       favMovies: PropTypes.array
-    }),
-
+    })
+  ),
+  /*
+      userData: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        birthday: PropTypes.string,
+        favMovies: PropTypes.array
+      }),
+  */
 
 };
-*/
+
 
 
