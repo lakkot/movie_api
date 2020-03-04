@@ -63,16 +63,16 @@ export class ProfileView extends React.Component {
     const { userData } = this.props;
     const { favMovies } = this.props.userData.favMovies;
     console.log(favMovies);
-    /*
-        if (favMovies) {
-          var favMoviesList = favMovies.map(itemFromList => (
-            <tr key={itemFromList}>
-              <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
-              <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
-            </tr>)
-          )
-        }
-    */
+
+    if (favMovies) {
+      var favMoviesList = favMovies.map(itemFromList => (
+        <tr key={itemFromList}>
+          <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
+          <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
+        </tr>)
+      )
+    }
+
     return (
 
       <div className="col-8 mx-auto profile-container">
