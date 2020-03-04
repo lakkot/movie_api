@@ -156,10 +156,10 @@ export class MainView extends React.Component {
             <Route path="/register" render={() => <RegistrationView />} />
             <Route path="/login" render={() => <LoginView onLoggedIn={user => this.onLoggedIn(user)} />} />
             <Route path="/users/:username" render={() => <ProfileView userData={userData} favMovies={userData.favMovies} />} />
-            <Route path="/update/:username" render={() => <UpdateUsername user={user} />} />
-            <Route path="/password/:username" render={() => <UpdatePassword user={user} />} />
-            <Route path="/email/:username" render={() => <UpdateEmail user={user} />} />
-            <Route path="/birthday/:username" render={() => <UpdateBirthday user={user} />} />
+            <Route path="/update/:username" render={() => <UpdateUsername user={userData.username} />} />
+            <Route path="/password/:username" render={() => <UpdatePassword user={userData.username} />} />
+            <Route path="/email/:username" render={() => <UpdateEmail user={userData.username} />} />
+            <Route path="/birthday/:username" render={() => <UpdateBirthday user={userData.username} />} />
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} favMovies={userData.favMovies} />} />
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
