@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table'
-import { Link } from "react-router-dom";
 
 import './profile-view.scss'
+
+import { Link } from "react-router-dom";
 
 export class ProfileView extends React.Component {
   constructor() {
@@ -61,8 +62,7 @@ export class ProfileView extends React.Component {
 
   render() {
     const { userData } = this.props;
-    const { favMovies } = this.props.userData.favMovies;
-    console.log(favMovies);
+    const favMovies = this.props.userData.favMovies;
 
     if (favMovies) {
       var favMoviesList = favMovies.map(itemFromList => (
@@ -129,11 +129,6 @@ export class ProfileView extends React.Component {
           <Button variant="primary large" type="button" className="password-button" size="sm" onClick={() => this.deleteProfile()}>DELETE ACCOUNT</Button>
         </div>
       </div>
-
-
-
-
-
     )
   }
 }
