@@ -64,9 +64,9 @@ function MoviesList(props) {
         className="justify-content-center"
         type="TailSpin"
         color="rgb(223, 219, 219)"
-        height={200}
-        width={200}
-        timeout={5000} //5 secs
+        height={150}
+        width={150}
+        timeout={10000} //10 secs
       />
     </div>
 
