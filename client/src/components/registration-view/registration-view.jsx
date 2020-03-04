@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './registration-view.scss'
@@ -14,8 +13,40 @@ export function RegistrationView(props) {
   const [email, createEmail] = useState('');
   const [birthday, createBirthday] = useState('');
 
+  function showErrorMessage($input, message) {
+    // go to parent element of where the message should be displayed
+    var $container = $input.parentElement;
+    //delete the defalut browser messages - if a message shows up, delete it
+    var error = $container.querySelector('.error-message');
+    if (error) {
+      $container.removeChild(error);
+    }
+    //add your own message (error) to show if the message isn't empty
+    if (message) {
+      var error = document.createElement('div');
+      error.classList.add('error-message');
+      error.innerText = message;
+      $container.appendChild(error);
+    }
+  }
 
+  function validateUsername(e) {
+    var $userInput = document.querySelector('.login-input');
+    var value = $userInput.value;
 
+    if (!value) {
+      showErrorMessage($userInput, 'username is required');
+    }
+
+    if (/[^a-zA-Z0-9]/.test(value)) {
+      showErrorMessage($userInput, 'use only alphanumeric characters');
+      return false;
+    }
+
+    //handleSubmit(e);
+    showErrorMessage($userInput, 'username updated');
+    return true;
+  }
 
   const handleSubmit = (e) => {
     axios.post('https://mymovies-database.herokuapp.com/users', {
@@ -26,7 +57,6 @@ export function RegistrationView(props) {
     })
       .then(response => {
         const data = response.data;
-        console.log(data)
         window.open('/', '_self'); //_self means that it will open in the same browser window
       })
       .catch(e => {
@@ -35,7 +65,7 @@ export function RegistrationView(props) {
 
 
 
-    console.log(username, password, email, birthday);
+    //console.log(username, password, email, birthday);
 
   }
 

@@ -132,7 +132,7 @@ export class MainView extends React.Component {
               <Nav.Link href='/'>
                 <Button variant="dark" type="button" className="main-button">home</Button>
               </Nav.Link>
-              <Nav.Link href={'/users/' + userData.username}>
+              <Nav.Link href={'/client/users/' + userData.username}>
                 <Button variant="dark" type="button" className="main-button">user profile</Button>
               </Nav.Link>
             </Nav>
@@ -140,7 +140,7 @@ export class MainView extends React.Component {
               <Nav.Link>
                 <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log in</Button>
               </Nav.Link>
-              <Nav.Link href="/login">
+              <Nav.Link href="/client/login">
                 <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
               </Nav.Link>
             </Nav>
@@ -153,20 +153,20 @@ export class MainView extends React.Component {
               if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
               return <MoviesList movies={movies} />;
             }} />
-            <Route path="/register" render={() => <RegistrationView />} />
-            <Route path="/login" render={() => <LoginView onLoggedIn={user => this.onLoggedIn(user)} />} />
-            <Route path="/users/:username" render={() => <ProfileView userData={userData} favMovies={userData.favMovies} />} />
-            <Route path="/update/:username" render={() => <UpdateUsername user={userData.username} />} />
-            <Route path="/password/:username" render={() => <UpdatePassword user={userData.username} />} />
-            <Route path="/email/:username" render={() => <UpdateEmail user={userData.username} />} />
-            <Route path="/birthday/:username" render={() => <UpdateBirthday user={userData.username} />} />
-            <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} favMovies={userData.favMovies} />} />
-            <Route path="/genres/:name" render={({ match }) => {
+            <Route path="/client/register" render={() => <RegistrationView />} />
+            <Route path="/client/login" render={() => <LoginView onLoggedIn={user => this.onLoggedIn(user)} />} />
+            <Route path="/client/users/:username" render={() => <ProfileView userData={userData} favMovies={userData.favMovies} />} />
+            <Route path="/client/update/:username" render={() => <UpdateUsername user={userData.username} />} />
+            <Route path="/client/password/:username" render={() => <UpdatePassword user={userData.username} />} />
+            <Route path="/client/email/:username" render={() => <UpdateEmail user={userData.username} />} />
+            <Route path="/client/birthday/:username" render={() => <UpdateBirthday user={userData.username} />} />
+            <Route path="/client/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} favMovies={userData.favMovies} />} />
+            <Route path="/client/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
               return <GenreView genre={movies.find(m => m.genre.name === match.params.name).genre} />
             }
             } />
-            <Route path="/directors/:name" render={({ match }) => {
+            <Route path="/client/directors/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
               return <DirectorView director={movies.find(m => m.director.name === match.params.name).director} />
             }

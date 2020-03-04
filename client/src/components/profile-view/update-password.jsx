@@ -54,7 +54,7 @@ export function UpdatePassword(props) {
       .then(res => {
         const data = res.data;
         console.log(data);
-        window.open(`/users/${localStorage.getItem('user')}`, '_self');
+        window.open(`/client/users/${localStorage.getItem('user')}`, '_self');
       })
       .catch(error => {
         console.log('error updating user ' + error);
