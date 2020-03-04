@@ -67,7 +67,7 @@ export class ProfileView extends React.Component {
 
   render() {
     const { userData } = this.props;
-    const favMovies = this.props.userData.favMovies;
+    const { favMovies } = this.props.userData.favMovies;
 
     if (favMovies) {
       var favMoviesList = favMovies.map(itemFromList => (
