@@ -53,7 +53,8 @@ export class ProfileView extends React.Component {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
       .then(response => {
-        this.getUser(localStorage.getItem('token'));
+        alert('deleted from favorites');
+        document.location.reload(true);
       })
       .catch(event => {
         alert('Oops... something went wrong...');
