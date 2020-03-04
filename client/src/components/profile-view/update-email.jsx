@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-
-
-
-
 
 export function UpdateEmail(props) {
   const { user } = props;
@@ -15,10 +12,7 @@ export function UpdateEmail(props) {
     e.preventDefault();
     axios.put(`https://mymovies-database.herokuapp.com/email/${user}`, {
       email: email
-
-    }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+    }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(res => {
         const data = res.data;
         window.open(`/users/${localStorage.getItem('user')}`, '_self');
@@ -26,7 +20,6 @@ export function UpdateEmail(props) {
       .catch(error => {
         console.log('error updating user ' + error);
       });
-
   }
 
   function showErrorMessage($input, message) {
@@ -45,7 +38,6 @@ export function UpdateEmail(props) {
       $container.appendChild(error);
     }
   }
-
 
   function validateEmail(e) {
     var $emailInput = document.querySelector('.email-input');
@@ -77,4 +69,5 @@ export function UpdateEmail(props) {
       </div>
     </Form>
   );
+
 }

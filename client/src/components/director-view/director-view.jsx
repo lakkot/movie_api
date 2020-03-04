@@ -7,9 +7,7 @@ import Button from 'react-bootstrap/Button';
 
 import { Link } from "react-router-dom";
 
-
 import './director-view.scss'
-
 
 export class DirectorView extends React.Component {
   constructor() {
@@ -17,14 +15,10 @@ export class DirectorView extends React.Component {
     this.state = {}
   }
 
-
   render() {
     const { director } = this.props;
 
     if (!director) return null;
-
-
-
 
     return (
 
@@ -52,25 +46,17 @@ export class DirectorView extends React.Component {
             <p className="view-label label">Death: </p>
             <p className="value">{director.death}</p>
           </Row>
-
-
         </Row>
       </Container>
     );
   }
 }
-/*
-Director.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    imageURL: PropTypes.string.isRequired,
-    genre: PropTypes.shape({
-      name: PropTypes.string
-    }),
-    director: PropTypes.shape({
-      name: PropTypes.string
-    }),
+
+DirectorView.propTypes = {
+  director: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    bio: PropTypes.string,
+    birth: PropTypes.string,
+    death: PropTypes.string
   }).isRequired
 };
-*/

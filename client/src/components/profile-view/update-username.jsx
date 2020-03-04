@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './profile-view.scss'
 
-
-
 export function UpdateUsername(props) {
   const { user } = props;
 
   const [username, setUsername] = useState('');
-
 
   function showErrorMessage($input, message) {
     // go to parent element of where the message should be displayed
@@ -37,10 +35,10 @@ export function UpdateUsername(props) {
       showErrorMessage($userInput, 'username is required');
     }
 
-    if( /[^a-zA-Z0-9]/.test( value ) ) {
+    if (/[^a-zA-Z0-9]/.test(value)) {
       showErrorMessage($userInput, 'use only alphanumeric characters');
       return false;
-    } 
+    }
 
     handleUpdate(e);
     showErrorMessage($userInput, 'username updated');
@@ -52,10 +50,7 @@ export function UpdateUsername(props) {
     e.preventDefault();
     axios.put(`https://mymovies-database.herokuapp.com/users/${user}`, {
       username: username,
-
-    }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+    }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(res => {
         const data = res.data;
         localStorage.setItem('user', data.username);
@@ -71,10 +66,10 @@ export function UpdateUsername(props) {
     <Form className=" col-5 login-form">
       <Form.Group controlId="formBasicEmail">
         <Form.Label className="profile-label">New username: </Form.Label>
-        <Form.Control className="login-input" type="text" value={username} onChange={e => setUsername(e.target.value)}/>
+        <Form.Control className="login-input" type="text" value={username} onChange={e => setUsername(e.target.value)} />
       </Form.Group>
       <div className="change-button-area">
-  
+
         <Button variant="secondary" type="button" className="login-button" onClick={validateUsername}>update</Button>
 
       </div>

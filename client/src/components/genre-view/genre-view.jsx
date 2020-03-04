@@ -6,9 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import { Link } from "react-router-dom";
 
-
 import './genre-view.scss'
-
 
 export class GenreView extends React.Component {
   constructor() {
@@ -16,14 +14,10 @@ export class GenreView extends React.Component {
     this.state = {}
   }
 
-
   render() {
     const { genre } = this.props;
 
     if (!genre) return null;
-
-
-
 
     return (
 
@@ -47,18 +41,10 @@ export class GenreView extends React.Component {
     );
   }
 }
-/*
-Director.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    imageURL: PropTypes.string.isRequired,
-    genre: PropTypes.shape({
-      name: PropTypes.string
-    }),
-    director: PropTypes.shape({
-      name: PropTypes.string
-    }),
+
+GenreView.propTypes = {
+  genre: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
   }).isRequired
 };
-*/

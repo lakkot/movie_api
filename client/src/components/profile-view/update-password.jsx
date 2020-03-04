@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './profile-view.scss'
 
-
-export function UpdatePassword (props) {
+export function UpdatePassword(props) {
   const { user } = props;
 
   const [password, setPassword] = useState('');
@@ -27,33 +27,30 @@ export function UpdatePassword (props) {
     }
   }
 
-function validatePassword(e) {
-  var $passwordInput = document.querySelector('.password-input');
+  function validatePassword(e) {
+    var $passwordInput = document.querySelector('.password-input');
 
-  var value = $passwordInput.value;
+    var value = $passwordInput.value;
 
-  if(!value) {
-    showErrorMessage($passwordInput, 'password is required');
-    return false;
-  }
-
-  if(value.length < 8) {
-    showErrorMessage($passwordInput, 'password must be at least 8 characters long');
-    return false;
-  }
-  handleUpdate(e);
-  showErrorMessage($passwordInput, 'password updated');
+    if (!value) {
+      showErrorMessage($passwordInput, 'password is required');
+      return false;
+    }
+    if (value.length < 8) {
+      showErrorMessage($passwordInput, 'password must be at least 8 characters long');
+      return false;
+    }
+    handleUpdate(e);
+    showErrorMessage($passwordInput, 'password updated');
     return true;
-}
+  }
 
   const handleUpdate = (e) => {
     e.preventDefault();
     axios.put(`https://mymovies-database.herokuapp.com/password/${user}`, {
       password: password,
 
-    }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+    }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(res => {
         const data = res.data;
         console.log(data);
@@ -72,9 +69,7 @@ function validatePassword(e) {
         <Form.Control className="password-input" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder={password} />
       </Form.Group>
       <div className="change-button-area">
-  
         <Button variant="secondary" type="button" className="login-button" onClick={validatePassword}>update</Button>
-
       </div>
     </Form>
   );

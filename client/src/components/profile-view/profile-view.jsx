@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table'
-
-import './profile-view.scss'
-
 import { Link } from "react-router-dom";
 
+import './profile-view.scss'
 
 export class ProfileView extends React.Component {
   constructor() {
@@ -16,8 +14,6 @@ export class ProfileView extends React.Component {
     this.state = {
     };
   }
-
-
 
   componentDidMount() {
     //authentication
@@ -63,21 +59,20 @@ export class ProfileView extends React.Component {
       });
   }
 
-
-
   render() {
     const { userData } = this.props;
     const { favMovies } = this.props.userData.favMovies;
-
-    if (favMovies) {
-      var favMoviesList = favMovies.map(itemFromList => (
-        <tr key={itemFromList}>
-          <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
-          <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
-        </tr>)
-      )
-    }
-
+    console.log(favMovies);
+    /*
+        if (favMovies) {
+          var favMoviesList = favMovies.map(itemFromList => (
+            <tr key={itemFromList}>
+              <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
+              <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
+            </tr>)
+          )
+        }
+    */
     return (
 
       <div className="col-8 mx-auto profile-container">
@@ -142,3 +137,21 @@ export class ProfileView extends React.Component {
     )
   }
 }
+/*
+ProfileView.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    })
+  ),
+  userData: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    birthday: PropTypes.string,
+    favMovies: PropTypes.array
+  }),
+  token: PropTypes.string.isRequired,
+};
+
+*/

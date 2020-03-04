@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import axios from 'axios';
-import './login-view.scss';
-
 import { Link } from "react-router-dom";
 
+import './login-view.scss';
 
 export function LoginView(props) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { register } = useState('');
-  //    props.onLoggedIn(username);
+  //props.onLoggedIn(username);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    /* Send a request to the server for authentication */
+    // Send a request to the server for authentication
     axios.post('https://mymovies-database.herokuapp.com/login', {
       username: username,
       password: password
@@ -49,3 +50,7 @@ export function LoginView(props) {
     </Form>
   );
 }
+
+LoginView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired
+};

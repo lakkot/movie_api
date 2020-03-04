@@ -1,21 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
-
-
-
 import { connect } from 'react-redux';
-
-
-
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 import MoviesList from '../movies-list/movies-list';
-import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { DirectorView } from '../director-view/director-view';
@@ -30,14 +23,7 @@ import { UpdateBirthday } from '../profile-view/update-birthday';
 // #0
 import { setMovies, setUserData } from '../../actions/actions';
 
-
-
-
-
-
 import './main-view.scss';
-
-
 
 export class MainView extends React.Component {
 
@@ -54,8 +40,6 @@ export class MainView extends React.Component {
     };
   }
 
-
-
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
@@ -71,8 +55,6 @@ export class MainView extends React.Component {
     this.setState({ selectedMovie: movie });
   }
 
-
-
   onLoggedIn(authData) {
     this.setState({
       user: authData.user.username,
@@ -83,10 +65,6 @@ export class MainView extends React.Component {
     this.getMovies(authData.token);
     this.getUser(authData.token);
   }
-
-
-
-
 
   getMovies(token) {
     axios.get('https://mymovies-database.herokuapp.com/movies', {
@@ -100,7 +78,6 @@ export class MainView extends React.Component {
         console.log(error);
       });
   }
-
 
   getUser(token) {
     let username = localStorage.getItem('user');
@@ -116,7 +93,6 @@ export class MainView extends React.Component {
       });
   }
 
-
   logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -131,18 +107,15 @@ export class MainView extends React.Component {
     this.setState({ register: null })
   }
 
-
-
   render() {
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
     let { movies, userData } = this.props;
     const { user, register } = this.state;
 
-
+    console.log(userData);
 
     if (register === false) return <RegistrationView onClick={() => this.dontWantToRegister()} />
-
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
@@ -150,6 +123,7 @@ export class MainView extends React.Component {
     return (
 
       <Router>
+
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="navbar">
           <Navbar.Brand>My Movies App</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -181,13 +155,11 @@ export class MainView extends React.Component {
             }} />
             <Route path="/register" render={() => <RegistrationView />} />
             <Route path="/login" render={() => <LoginView onLoggedIn={user => this.onLoggedIn(user)} />} />
-
             <Route path="/users/:username" render={() => <ProfileView userData={userData} favMovies={userData.favMovies} />} />
             <Route path="/update/:username" render={() => <UpdateUsername user={user} />} />
             <Route path="/password/:username" render={() => <UpdatePassword user={user} />} />
             <Route path="/email/:username" render={() => <UpdateEmail user={user} />} />
             <Route path="/birthday/:username" render={() => <UpdateBirthday user={user} />} />
-
             <Route path="/movies/:movieId" render={({ match }) => <MovieView movie={movies.find(m => m._id === match.params.movieId)} favMovies={userData.favMovies} />} />
             <Route path="/genres/:name" render={({ match }) => {
               if (!movies) return <div className="main-view" />;
@@ -207,44 +179,56 @@ export class MainView extends React.Component {
   }
 }
 
-// #3
+// #redux
 let mapStateToProps = state => {
   return { movies: state.movies, userData: state.userData };
 
 }
 
-// #4
+// redux
 export default connect(mapStateToProps, { setMovies, setUserData })(MainView);
 
-
-
 /*
+MainView.propTypes = {
 
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">My Movies App</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link>
-                <Link to={'/'}>
-                  <Button variant="dark" type="button" className="main-button">home</Button>
-                </Link>
-              </Nav.Link>
-              <Nav.Link href="#pricing">
-                <Link to={`/users/${user}`}>
-                  <Button variant="dark" type="button" className="main-button">user profile</Button>
-                </Link>
-              </Nav.Link>
-            </Nav>
-            <Nav>
-              <Nav.Link>
-                <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log in</Button>
-                <Link to={'/login'}>
-                  <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
-                </Link>
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-                  </Navbar>
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      imageURL: PropTypes.string,
+      description: PropTypes.string,
+      genre: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        description: PropTypes.string
+      }),
+      director: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        bio: PropTypes.string,
+        birth: PropTypes.string,
+        death: PropTypes.string,
+      })
+    })
+  ),
 
+    userData: PropTypes.arrayOf(
+      PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+        birthday: PropTypes.string,
+        favMovies: PropTypes.array
+      })
+    ),
+
+    userData: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      birthday: PropTypes.string,
+      favMovies: PropTypes.array
+    }),
+
+
+};
 */
+
+

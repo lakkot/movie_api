@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import './profile-view.scss'
 
-
-export function UpdateBirthday (props) {
+export function UpdateBirthday(props) {
   const { user } = props;
 
   const [birthday, setBirthday] = useState('');
@@ -14,9 +14,7 @@ export function UpdateBirthday (props) {
     e.preventDefault();
     axios.put(`https://mymovies-database.herokuapp.com/birthday/${user}`, {
       birthday: birthday
-    }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
+    }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(res => {
         const data = res.data;
         window.open(`/users/${localStorage.getItem('user')}`, '_self');
@@ -24,7 +22,6 @@ export function UpdateBirthday (props) {
       .catch(error => {
         console.log('error updating user ' + error);
       });
-
   }
 
   return (
@@ -34,9 +31,7 @@ export function UpdateBirthday (props) {
         <Form.Control type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
       </Form.Group>
       <div className="change-button-area">
-  
         <Button variant="secondary" type="button" className="login-button" onClick={handleUpdate}>update</Button>
-
       </div>
     </Form>
   );

@@ -8,16 +8,13 @@ import Button from 'react-bootstrap/Button';
 
 import { Link } from "react-router-dom";
 
-
 import './movie-view.scss'
-
 
 export class MovieView extends React.Component {
   constructor() {
     super();
 
   }
-
 
   deleteFromFavs(e) {
     const { movie } = this.props;
@@ -28,14 +25,10 @@ export class MovieView extends React.Component {
     })
       .then(response => {
         document.location.reload(true);
-
       })
-      
       .catch(event => {
         alert('Oops... something went wrong...');
-      })
-      
-      ;
+      });
   }
 
   addToFavorites(e) {
@@ -45,29 +38,15 @@ export class MovieView extends React.Component {
       {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
-      /*
-      .then(res => {
-
-        var $container = document.querySelector('.button-pane');
-        var message = document.createElement('p');
-        message.classList.add('message');
-        message.innerText = `${movie.title}  added to favorites`;
-        $container.appendChild(message);
-
-        //alert(`${movie.title}  added to favorites`);
-      })
-      */
       .then(res => {
         document.location.reload(true);
         this.setState
       })
-      
+
       .catch(error => {
         alert(`${movie.title} not added to favorites` + error)
       });
   }
-
-
 
   toggleFavorites(e) {
     if (this.props.favMovies.find(m => m === this.props.movie._id)) { //get movie ID from props and it should work
@@ -88,16 +67,14 @@ export class MovieView extends React.Component {
       }
     }
 
-   }
-
- 
+  }
 
   render() {
-    const { movie, favMovies } = this.props;
+    const { movie } = this.props;
     if (!movie) return null;
 
     const button = this.changeButton();
-    
+
     return (
 
       <Container className="view-container">
@@ -116,7 +93,6 @@ export class MovieView extends React.Component {
               <p className="view-label label">Description: </p>
               <p className="value description"> {movie.description}</p>
             </Row>
-
             <Row className="description-row movie-genre">
               <span className="view-label label">Genre: </span>
               <Link to={`/genres/${movie.genre.name}`}>
@@ -139,7 +115,7 @@ export class MovieView extends React.Component {
     );
   }
 }
-/*
+
 MovieView.propTypes = {
   movie: PropTypes.shape({
     title: PropTypes.string.isRequired,
@@ -153,4 +129,3 @@ MovieView.propTypes = {
     }),
   }).isRequired
 };
-*/
