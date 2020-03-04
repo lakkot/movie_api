@@ -13,6 +13,7 @@ export function RegistrationView(props) {
   const [email, createEmail] = useState('');
   const [birthday, createBirthday] = useState('');
 
+
   function showErrorMessage($input, message) {
     // go to parent element of where the message should be displayed
     var $container = $input.parentElement;
@@ -31,22 +32,56 @@ export function RegistrationView(props) {
   }
 
   function validateUsername(e) {
-    var $userInput = document.querySelector('.login-input');
+    var $userInput = document.querySelector('.username-input');
     var value = $userInput.value;
-
     if (!value) {
       showErrorMessage($userInput, 'username is required');
     }
-
     if (/[^a-zA-Z0-9]/.test(value)) {
       showErrorMessage($userInput, 'use only alphanumeric characters');
       return false;
     }
-
-    //handleSubmit(e);
-    showErrorMessage($userInput, 'username updated');
+    validatePassword(e);
+    showErrorMessage($userInput, 'username correct');
     return true;
   }
+
+  function validatePassword(e) {
+    var $passwordInput = document.querySelector('.password-input');
+
+    var value = $passwordInput.value;
+
+    if (!value) {
+      showErrorMessage($passwordInput, 'password is required');
+      return false;
+    }
+    if (value.length < 8) {
+      showErrorMessage($passwordInput, 'password must be at least 8 characters long');
+      return false;
+    }
+    validateEmail(e);
+    showErrorMessage($passwordInput, 'password correct');
+    return true;
+  }
+
+  function validateEmail(e) {
+    var $emailInput = document.querySelector('.email-input');
+    var value = $emailInput.value;
+
+    if (!value) {
+      showErrorMessage($emailInput, 'e-mail is required');
+      return false;
+    }
+    if (value.indexOf('@') === -1 && value.indexOf('.') === -1) {
+      showErrorMessage($emailInput, 'enter a valid e-mail address');
+      return false;
+    }
+    handleSubmit(e);
+    showErrorMessage($emailInput, 'email correct');
+    return true;
+  }
+
+
 
   const handleSubmit = (e) => {
     axios.post('https://mymovies-database.herokuapp.com/users', {
@@ -92,7 +127,7 @@ export function RegistrationView(props) {
         <Link to={'/'}>
           <Button variant="secondary" type="button" className="register-button">Cancel</Button>
         </Link>
-        <Button variant="secondary" type="button" className="register-button" onClick={handleSubmit}>Submit</Button>
+        <Button variant="secondary" type="button" className="register-button" onClick={validateUsername}>Submit</Button>
       </div>
     </Form>
   );
