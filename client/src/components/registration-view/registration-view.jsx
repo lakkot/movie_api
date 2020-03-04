@@ -92,7 +92,7 @@ export function RegistrationView(props) {
     })
       .then(response => {
         const data = response.data;
-        window.open('/', '_self'); //_self means that it will open in the same browser window
+        window.open('/client', '_self'); //_self means that it will open in the same browser window
       })
       .catch(e => {
         console.log('error in registration')

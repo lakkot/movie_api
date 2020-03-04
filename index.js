@@ -6,6 +6,7 @@ const express = require('express'),
   uuid = require('uuid'),
   mongoose = require('mongoose'),
   cors = require('cors'),
+  path = require("path"),
   bcrypt = require('bcrypt');
 
 
@@ -49,6 +50,10 @@ app.use(cors({
 //reroute requests for static pages to public folder
 //app.use(express.static('public')); - this will only work if you put .html at the end of the adress
 app.use(express.static('public', { extensions: ['html'] }));
+app.use("/client", express.static(path.join(__dirname, "client", "dist")));
+app.get("/client/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 //create log using morgan module
 app.use(morgan('common', {
   stream: fs.createWriteStream('log.txt')

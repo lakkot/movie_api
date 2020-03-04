@@ -24,7 +24,7 @@ export class GenreView extends React.Component {
       <Container className="genre-container col-6">
         <Row>
           <Row className="button-pane">
-            <Link to={'/'}>
+            <Link to={'/client'}>
               <Button variant="secondary" type="button" className="back-button">go back</Button>
             </Link>
           </Row>

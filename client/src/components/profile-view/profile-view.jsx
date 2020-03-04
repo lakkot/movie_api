@@ -38,7 +38,7 @@ export class ProfileView extends React.Component {
         this.setState({
           user: null
         });
-        window.open('/', '_self');
+        window.open('/client', '_self');
 
       })
       .catch(e => {
@@ -83,7 +83,7 @@ export class ProfileView extends React.Component {
               <td>username</td>
               <td>{userData.username}</td>
               <td>
-                <Link to={`/client/update/${userData.username}`}>
+                <Link to={`/update/${userData.username}`}>
                   <Button variant="secondary" type="button" className="register-button" size="sm">change</Button>
                 </Link>
               </td>
@@ -92,7 +92,7 @@ export class ProfileView extends React.Component {
               <td>email</td>
               <td>{userData.email}</td>
               <td>
-                <Link to={`/client/email/${userData.username}`}>
+                <Link to={`/email/${userData.username}`}>
                   <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
                 </Link></td>
             </tr>
@@ -100,7 +100,7 @@ export class ProfileView extends React.Component {
               <td>birthday</td>
               <td>{userData.birthday && userData.birthday.slice(0, 10)}</td>
               <td>
-                <Link to={`/client/birthday/${userData.username}`}>
+                <Link to={`/birthday/${userData.username}`}>
                   <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
                 </Link>
               </td>
@@ -109,7 +109,7 @@ export class ProfileView extends React.Component {
               <td>password</td>
               <td>********</td>
               <td>
-                <Link to={`/client/password/${userData.username}`}>
+                <Link to={`/password/${userData.username}`}>
                   <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
                 </Link>
               </td>

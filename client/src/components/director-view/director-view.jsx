@@ -25,7 +25,7 @@ export class DirectorView extends React.Component {
       <Container className="director-container col-6">
         <Row>
           <Row className="button-pane">
-            <Link to={'/'}>
+            <Link to={'/client'}>
               <Button variant="secondary" type="button" className="back-button">go back</Button>
             </Link>
           </Row>
