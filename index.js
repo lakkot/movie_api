@@ -79,8 +79,6 @@ app.get('/movies', /*passport.authenticate('jwt', { session: false }),*/ functio
     });
 });
 
-
-
 //get info by movie title
 app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ title: req.params.title })
@@ -138,26 +136,20 @@ app.post('/users',
     });
   });
 
-//allow users to change user data
+//change username
 app.put('/users/:username', passport.authenticate('jwt', { session: false }),
   [
     check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
     check('username', 'Use alphanumeric characters only').isAlphanumeric(),
-    //check('password', 'Password required').not().isEmpty(),
-    //check('email', 'Email is not valid').isEmail()
   ], (req, res) => {
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    //var hashedPassword = Users.hashPassword(req.body.password);
     Users.findOneAndUpdate({ username: req.params.username }, {
       $set:
       {
         username: req.body.username,
-        //password: hashedPassword,
-        //email: req.body.email,
-        //birthday: req.body.birthday
       }
     },
       { new: true },
@@ -172,13 +164,10 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }),
 
   });
 
-//allow users to change user data
+//change password
 app.put('/password/:username', passport.authenticate('jwt', { session: false }),
   [
-    //check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
-    //check('username', 'Use alphanumeric characters only').isAlphanumeric(),
     check('password', 'Password required').not().isEmpty(),
-    //check('email', 'Email is not valid').isEmail()
   ], (req, res) => {
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -188,10 +177,7 @@ app.put('/password/:username', passport.authenticate('jwt', { session: false }),
     Users.findOneAndUpdate({ username: req.params.username }, {
       $set:
       {
-        //username: req.body.username,
         password: hashedPassword,
-        //email: req.body.email,
-        //birthday: req.body.birthday
       }
     },
       { new: true },
@@ -206,25 +192,19 @@ app.put('/password/:username', passport.authenticate('jwt', { session: false }),
 
   });
 
+//change email
 app.put('/email/:username', passport.authenticate('jwt', { session: false }),
   [
-    //check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
-    //check('username', 'Use alphanumeric characters only').isAlphanumeric(),
-    //check('password', 'Password required').not().isEmpty(),
     check('email', 'Email is not valid').isEmail()
   ], (req, res) => {
     var errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    //var hashedPassword = Users.hashPassword(req.body.password);
     Users.findOneAndUpdate({ username: req.params.username }, {
       $set:
       {
-        //username: req.body.username,
-        //password: hashedPassword,
         email: req.body.email,
-        //birthday: req.body.birthday
       }
     },
       { new: true },
@@ -239,76 +219,30 @@ app.put('/email/:username', passport.authenticate('jwt', { session: false }),
 
   });
 
-app.put('/birthday/:username', passport.authenticate('jwt', { session: false }),
-  [
-    //check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
-    //check('username', 'Use alphanumeric characters only').isAlphanumeric(),
-    //check('password', 'Password required').not().isEmpty(),
-    //check('email', 'Email is not valid').isEmail()
-  ], (req, res) => {
-    var errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+//change birthday
+app.put('/birthday/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  var errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  Users.findOneAndUpdate({ username: req.params.username }, {
+    $set:
+    {
+      birthday: req.body.birthday
     }
-    //var hashedPassword = Users.hashPassword(req.body.password);
-    Users.findOneAndUpdate({ username: req.params.username }, {
-      $set:
-      {
-        //username: req.body.username,
-        //password: hashedPassword,
-        //email: req.body.email,
-        birthday: req.body.birthday
+  },
+    { new: true },
+    function (err, updatedUser) {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser)
       }
-    },
-      { new: true },
-      function (err, updatedUser) {
-        if (err) {
-          console.error(err);
-          res.status(500).send("Error: " + err);
-        } else {
-          res.json(updatedUser)
-        }
-      })
+    })
 
-  });
+});
 
-
-
-
-/*
-  app.put('/users/:username', passport.authenticate('jwt', { session: false }),
-  [
-    check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
-    check('username', 'Use alphanumeric characters only').isAlphanumeric(),
-    //check('password', 'Password required').not().isEmpty(),
-    check('email', 'Email is not valid').isEmail()
-  ], (req, res) => {
-    var errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    var hashedPassword = Users.hashPassword(req.body.password);
-    Users.findOneAndUpdate({ username: req.params.username }, {
-      $set:
-      {
-        username: req.body.username,
-        password: hashedPassword,
-        email: req.body.email,
-        birthday: req.body.birthday
-      }
-    },
-      { new: true },
-      function (err, updatedUser) {
-        if (err) {
-          console.error(err);
-          res.status(500).send("Error: " + err);
-        } else {
-          res.json(updatedUser)
-        }
-      })
-
-  });
-*/
 //check user data by username
 app.get('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ username: req.params.username })
@@ -416,3 +350,39 @@ app.delete('/movies/:id', passport.authenticate('jwt', { session: false }), (req
 app.listen(process.env.PORT || 8080, () => {
   console.log('I\'m always listening.....(on port 8080)')
 });
+
+
+/*
+  app.put('/users/:username', passport.authenticate('jwt', { session: false }),
+  [
+    check('username', 'username needs to be at least 6 characters long').isLength({ min: 5 }),
+    check('username', 'Use alphanumeric characters only').isAlphanumeric(),
+    //check('password', 'Password required').not().isEmpty(),
+    check('email', 'Email is not valid').isEmail()
+  ], (req, res) => {
+    var errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    var hashedPassword = Users.hashPassword(req.body.password);
+    Users.findOneAndUpdate({ username: req.params.username }, {
+      $set:
+      {
+        username: req.body.username,
+        password: hashedPassword,
+        email: req.body.email,
+        birthday: req.body.birthday
+      }
+    },
+      { new: true },
+      function (err, updatedUser) {
+        if (err) {
+          console.error(err);
+          res.status(500).send("Error: " + err);
+        } else {
+          res.json(updatedUser)
+        }
+      })
+
+  });
+*/
