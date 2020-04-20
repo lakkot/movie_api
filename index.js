@@ -31,7 +31,7 @@ var auth = require('./auth')(app); //this needs to be put ALWAYS after app.use(b
 
 app.use(cors({ origin: 'http://localhost:1234' }));
 
-/*
+
 var allowedOrigins = ['http://localhost:1234'];
 
 app.use(cors({
@@ -44,7 +44,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-*/
+
 
 /*****middleware functions*****/
 //reroute requests for static pages to public folder
