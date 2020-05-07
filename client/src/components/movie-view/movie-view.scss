@@ -10,10 +10,14 @@ $text-color: rgb(223, 219, 219);
 }
 
 
-.button-pane {
+.view-button-pane {
   width: 100%;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
 }
+
+
 
 .view-label {
   padding-right: 5px;
@@ -55,4 +59,33 @@ height: 10px;
 padding-top: 5px;
 padding-left: 10px;
 text-align: left;
-} 
+}
+
+.fav {
+  height: 50px;
+  width: 50px;
+}
+
+.login-message {
+color: $text-color;
+//border: 2p4x solid white;
+height: 90%;
+display: flex;
+align-items: center;
+}
+
+.favbutton {
+  outline: none;
+  border: none !important;
+  background-color: none !important;
+}
+
+.favbutton:active,
+.favbutton:focus {
+  outline: none;
+  border: none;
+}
+
+.hidden {
+  display: none;
+}

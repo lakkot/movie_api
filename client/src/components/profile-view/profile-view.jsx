@@ -63,69 +63,81 @@ export class ProfileView extends React.Component {
 
   render() {
     const { userData } = this.props;
-    const favMovies = this.props.userData.favMovies;
+    console.log(userData);
+    if (userData) {
+      const favMovies = this.props.userData.favMovies;
 
-    if (favMovies) {
-      var favMoviesList = favMovies.map(itemFromList => (
-        <tr key={itemFromList}>
-          <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
-          <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
-        </tr>)
-      )
+      if (favMovies) {
+        var favMoviesList = favMovies.map(itemFromList => (
+          <tr key={itemFromList}>
+            <td>{JSON.parse(localStorage.getItem('movies')).find(movie => movie._id === itemFromList).title} </td>
+            <td><Button className="del-fav" variant="secondary" size="sm" onClick={(event) => this.deleteFromFavs(event, itemFromList)}>Delete</Button></td>
+          </tr>)
+        )
+      }
     }
+
+    if (userData) {
+      var content = <div>
+      <Table hover variant="dark" className="table">
+      <tbody>
+        <tr>
+          <td>username</td>
+          <td>{userData.username}</td>
+          <td>
+            <Link to={`/update/${userData.username}`}>
+              <Button variant="secondary" type="button" className="register-button" size="sm">change</Button>
+            </Link>
+          </td>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>{userData.email}</td>
+          <td>
+            <Link to={`/email/${userData.username}`}>
+              <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
+            </Link></td>
+        </tr>
+        <tr>
+          <td>birthday</td>
+          <td>{userData.birthday && userData.birthday.slice(0, 10)}</td>
+          <td>
+            <Link to={`/birthday/${userData.username}`}>
+              <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
+            </Link>
+          </td>
+        </tr>
+        <tr>
+          <td>password</td>
+          <td>********</td>
+          <td>
+            <Link to={`/password/${userData.username}`}>
+              <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
+            </Link>
+          </td>
+        </tr>
+      </tbody>
+    </Table>
+
+    <Table hover variant="dark" className="table col-6">
+      <tbody>
+        <tr>
+          <td>Favorite movies</td>
+          <td></td>
+        </tr>
+        {favMoviesList}
+      </tbody>
+    </Table>
+    </div>
+    } else {
+      var content = <p>waiting for data....</p>
+    }
+   
 
     return (
 
       <div className="col-8 mx-auto profile-container">
-        <Table hover variant="dark" className="table">
-          <tbody>
-            <tr>
-              <td>username</td>
-              <td>{userData.username}</td>
-              <td>
-                <Link to={`/update/${userData.username}`}>
-                  <Button variant="secondary" type="button" className="register-button" size="sm">change</Button>
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <td>email</td>
-              <td>{userData.email}</td>
-              <td>
-                <Link to={`/email/${userData.username}`}>
-                  <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
-                </Link></td>
-            </tr>
-            <tr>
-              <td>birthday</td>
-              <td>{userData.birthday && userData.birthday.slice(0, 10)}</td>
-              <td>
-                <Link to={`/birthday/${userData.username}`}>
-                  <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <td>password</td>
-              <td>********</td>
-              <td>
-                <Link to={`/password/${userData.username}`}>
-                  <Button variant="secondary small" type="button" className="register-button" size="sm">change</Button>
-                </Link>
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-
-        <Table hover variant="dark" className="table col-6">
-          <tbody>
-            <tr>
-              <td>Favorite movies</td>
-              <td></td>
-            </tr>
-            {favMoviesList}
-          </tbody>
-        </Table>
+        {content}
         <div className="bottom">
           <Button variant="primary large" type="button" className="password-button" size="sm" onClick={() => this.deleteProfile()}>DELETE ACCOUNT</Button>
         </div>
@@ -133,6 +145,8 @@ export class ProfileView extends React.Component {
     )
   }
 }
+
+/*
 
 ProfileView.propTypes = {
   movies: PropTypes.arrayOf(
@@ -150,3 +164,4 @@ ProfileView.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
+*/

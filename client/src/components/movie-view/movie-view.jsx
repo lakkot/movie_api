@@ -9,17 +9,25 @@ import Button from 'react-bootstrap/Button';
 import { Link } from "react-router-dom";
 
 import './movie-view.scss'
+import addfav from "./img/heart1.svg"
+import remfav from "./img/heart2.svg"
 
 export class MovieView extends React.Component {
   constructor() {
     super();
+    this.state = {
+    };
 
+  }
+
+  componentDidMount() {
+    const {userData} = this.props;
+    console.log(userData);
   }
 
   deleteFromFavs(e) {
     const { movie } = this.props;
     console.log(movie._id)
-    e.preventDefault();
     axios.delete(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
@@ -33,7 +41,6 @@ export class MovieView extends React.Component {
 
   addToFavorites(e) {
     const { movie } = this.props;
-    e.preventDefault();
     axios.post(`https://mymovies-database.herokuapp.com/users/${localStorage.getItem('user')}/movies/${movie._id}`, { username: localStorage.getItem('user') },
       {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
@@ -49,12 +56,28 @@ export class MovieView extends React.Component {
   }
 
   toggleFavorites(e) {
-    if (this.props.favMovies.find(m => m === this.props.movie._id)) { //get movie ID from props and it should work
-      this.deleteFromFavs(e);
+    
+    const { movie, userData, favMovies } = this.props;
+    console.log(userData)
+    if (!favMovies) {
+      var favClass = "hidden"
     } else {
-      this.addToFavorites(e);
-
+      var favClass = "";
+      var isUser = "hidden";
     }
+
+    if (favMovies) {
+      if (favMovies.find(m => m === movie._id)) { //get movie ID from props and it should work
+        return <button onClick={() => this.deleteFromFavs(e)} className="favbutton"><img src={remfav} className={`fav + ${favClass}`} alt="Twittsder"></img></button>;
+        //this.deleteFromFavs(e);
+      } else {
+        return <button onClick={() => this.addToFavorites(e)} className="favbutton"><img src={addfav} className={`fav + ${favClass}`} alt="Twittsder"></img></button>;
+        //this.addToFavorites(e);
+      }
+    } else {
+      return <p className={`login-message align-me + ${isUser}`}>log in to add movie to favorites</p>    
+  }
+    
   }
 
   changeButton() {
@@ -70,20 +93,34 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie } = this.props;
+    const { userData, movie, favMovies } = this.props;
     if (!movie) return null;
 
     const button = this.changeButton();
+    const favs = this.toggleFavorites();
 
+    if (!favMovies) {
+      var favClass = "hidden"
+    } else {
+      var favClass = "";
+      var isUser = "hidden";
+    }
+
+    console.log(userData);
     return (
 
       <Container className="view-container">
+        
         <Row>
-          <Row className="button-pane">
-            <Link to={'/'}>
-              <Button variant="secondary" type="button" className="view-button">go back</Button>
-            </Link>
-            <Button variant="secondary" type="button" className="view-button" onClick={(e) => this.toggleFavorites(e)}>{button}</Button>
+          <Row className="view-button-pane">
+            <div>
+              <Link to={'/'}>
+                <Button variant="secondary" type="button" className="view-button">go back</Button>
+              </Link>
+            </div>
+            <div>
+              {favs}
+            </div>
           </Row>
           <Col xs={12} md={6} className="view-description">
             <Row className="movie-title">
@@ -129,3 +166,8 @@ MovieView.propTypes = {
     }),
   }).isRequired
 };
+
+
+/*
+            <Button variant="secondary" type="button" className="view-button" onClick={(e) => this.toggleFavorites(e)}>{button}</Button>
+*/

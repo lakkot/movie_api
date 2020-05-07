@@ -41,13 +41,14 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
+    this.getMovies();
     let accessToken = localStorage.getItem('token');
+    this.getUser(accessToken);
     if (accessToken !== null) {
       this.setState({
         user: localStorage.getItem('user')
       });
-      this.getMovies(accessToken);
-      this.getUser(accessToken);
+      //this.getUser(accessToken);
     }
   }
 
@@ -62,14 +63,11 @@ export class MainView extends React.Component {
 
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.username);
-    this.getMovies(authData.token);
     this.getUser(authData.token);
   }
 
-  getMovies(token) {
-    axios.get('https://mymovies-database.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+  getMovies() {
+    axios.get('https://mymovies-database.herokuapp.com/movies')
       .then(response => {
         // #1
         this.props.setMovies(response.data);
@@ -81,16 +79,20 @@ export class MainView extends React.Component {
 
   getUser(token) {
     let username = localStorage.getItem('user');
-    axios.get(`https://mymovies-database.herokuapp.com/users/${username}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        // #1
-        this.props.setUserData(response.data);
+    if (username) {
+      axios.get(`https://mymovies-database.herokuapp.com/users/${username}`, {
+        headers: { Authorization: `Bearer ${token}` }
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .then(response => {
+          // #1
+          this.props.setUserData(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
+    
   }
 
   logout = () => {
@@ -112,6 +114,19 @@ export class MainView extends React.Component {
     // before the data is initially loaded
     let { movies, userData } = this.props;
     const { user, register } = this.state;
+
+
+    if (!user) {
+      var logpane = <Nav.Link href="/client/login">
+      <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log in</Button>
+    </Nav.Link>
+    } else {
+var logpane =               <Nav.Link>
+<Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
+</Nav.Link>
+    }
+
+
 
     console.log(userData);
 
@@ -137,26 +152,27 @@ export class MainView extends React.Component {
               </Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link href="/client/login">
-                <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log in</Button>
-              </Nav.Link>
-              <Nav.Link>
-                <Button variant="dark" type="button" onClick={() => this.logout()} className="main-button">log out</Button>
-              </Nav.Link>
+              {logpane}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
 
         <div className="container">
           <div className="main-view row mx-auto movies-list">
-            <Route exact path="/" render={() => {
-              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
-              return <MoviesList movies={movies} />;
-            }} />
+            <Route exact path="/" render={() => <MoviesList movies={movies} />} />
             <Route path="/register" render={() => <RegistrationView />} />
             <Route path="/login" render={() => <LoginView onLoggedIn={user => this.onLoggedIn(user)} />} />
-            <Route path="/users/:username" render={() => <ProfileView userData={userData} favMovies={userData.favMovies} />} />
-            <Route path="/update/:username" render={() => <UpdateUsername user={userData.username} />} />
+
+            <Route path="/update/:username" render={() => <UpdateUsername user={userData.username} userData={userData} />} />
+
+
+
+            <Route path="/users/:username" render={() => {
+              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+              return <ProfileView userData={userData} />
+            }} />
+          
+
             <Route path="/password/:username" render={() => <UpdatePassword user={userData.username} />} />
             <Route path="/email/:username" render={() => <UpdateEmail user={userData.username} />} />
             <Route path="/birthday/:username" render={() => <UpdateBirthday user={userData.username} />} />
@@ -208,7 +224,7 @@ MainView.propTypes = {
       })
     })
   ),
-
+/*
   userData: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
@@ -218,7 +234,7 @@ MainView.propTypes = {
       favMovies: PropTypes.array
     })
   ),
-  /*
+  
       userData: PropTypes.shape({
         _id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,

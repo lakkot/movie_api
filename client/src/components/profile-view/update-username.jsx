@@ -6,7 +6,8 @@ import axios from 'axios';
 import './profile-view.scss'
 
 export function UpdateUsername(props) {
-  const { user } = props;
+  const { user, userData } = props;
+  console.log(userData);
 
   const [username, setUsername] = useState('');
 
